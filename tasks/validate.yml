@@ -14,16 +14,12 @@
     msg: >
       Virtualization Technology (VT) is currently disabled. Please enable VT
       before running this role again.
-  when:
-    - not libvirt_host_require_vt | bool
-    - not libvirt_host_vt_enabled
+  when: not libvirt_host_vt_enabled
 
 - name: Fail if Virtualization Technology (VT) is disabled
   fail:
     msg: >
       Virtualization Technology (VT) is currently disabled. Please enable VT
       before running this role again.
-  when:
-    - libvirt_host_require_vt | bool
-    - not libvirt_host_vt_enabled
+  when: not libvirt_host_vt_enabled
 
