@@ -4,7 +4,6 @@ libvirt_pkgs:
   - libvirt-daemon-config-network
   - libvirt-daemon-kvm
   - qemu-kvm
-  - systemd-container
   - nfs-utils
   - openvswitch
   - libvirt-daemon
