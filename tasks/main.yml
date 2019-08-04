@@ -4,7 +4,7 @@
   include_tasks: validate.yml
 
 - name: ensure libvirt packages are installed
-  dnf:
+  package:
     name: "{{ item }}"
     state: present
   with_items: "{{ libvirt_pkgs }}"
