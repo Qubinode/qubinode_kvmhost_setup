@@ -16,8 +16,6 @@ libvirt_pkgs:
   - cockpit-storaged
   - cockpit-ws
   - openssh-server
-  - rolekit
-  - sscg
   - cockpit-kubernetes
   - cockpit-pcp
   - tuned
