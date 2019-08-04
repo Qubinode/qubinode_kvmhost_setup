@@ -1,0 +1,32 @@
+---
+libvirt_pkgs:
+  - virt-install
+  - libvirt-daemon-config-network
+  - libvirt-daemon-kvm
+  - qemu-kvm
+  - systemd-container
+  - nfs-utils
+  - openvswitch
+  - libvirt-daemon
+  - libvirt-client
+  - virt-top
+  - cockpit-bridge
+  - cockpit-networkmanager
+  - cockpit-packagekit
+  - cockpit-shell
+  - cockpit-storaged
+  - cockpit-ws
+  - openssh-server
+  - rolekit
+  - sscg
+  - cockpit-kubernetes
+  - cockpit-pcp
+  - tuned
+
+libvirt_services:
+  - libvirtd
+  - tuned
+
+storage_nic: false
+libvirt_disk: false
+

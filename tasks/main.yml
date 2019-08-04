@@ -1,0 +1,24 @@
+---
+
+- name: validate virtuaization extentions are available to this host
+  include_tasks: validate.yml
+
+- name: ensure libvirt packages are installed
+  dnf:
+    name: "{{ item }}"
+    state: present
+  with_items: "{{ libvirt_pkgs }}"
+
+- name: enable libvirt services
+  service:
+    name: "{{ item }}"
+    enabled: yes
+    state: started
+  with_items: "{{ libvirt_services }}"
+
+- name: start tuned profile virtual-host
+  shell: tuned-adm profile virtual-host
+  register: start_tuned
+  changed_when: start_tuned.rc != 0
+
+- meta: flush_handlers
