@@ -5,8 +5,11 @@
 
 - name: ensure libvirt packages are installed
   package:
-    name: "{{ libvirt_pkgs }}"
+    name: "{{ item }}"
     state: present
+  loop: "{{ libvirt_pkgs }}"
+  loop_control:
+    label: "{{ item }}"
 
 - name: enable libvirt services
   service:
