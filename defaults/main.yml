@@ -5,7 +5,6 @@ libvirt_pkgs:
   - libvirt-daemon-kvm
   - qemu-kvm
   - nfs-utils
-  - openvswitch
   - libvirt-daemon
   - libvirt-client
   - virt-top

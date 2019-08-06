@@ -4,12 +4,10 @@
   include_tasks: validate.yml
 
 - name: ensure libvirt packages are installed
-  package:
-    name: "{{ item }}"
+  yum:
+    name: "{{ libvirt_pkgs }}"
     state: present
-  loop: "{{ libvirt_pkgs }}"
-  loop_control:
-    label: "{{ item }}"
+    update_cache : yes
 
 - name: enable libvirt services
   service:
