@@ -1,0 +1,42 @@
+---
+- name: Ensure libvirt networks are defined
+  virt_net:
+    name: "{{ item.name }}"
+    command: define
+    xml: '{{ default(lookup("template", "br_network.xml.j2")) }}'
+  with_items: "{{ libvirt_host_networks }}"
+  become: True
+
+- name: Ensure libvirt networks are active
+  virt_net:
+    name: "{{ item.name }}"
+    state: active
+  with_items: "{{ libvirt_host_networks }}"
+  become: True
+
+- name: Ensure libvirt networks are started on boot
+  virt_net:
+    name: "{{ item.name }}"
+    autostart: yes
+  with_items: "{{ libvirt_host_networks }}"
+  become: True
+
+- name: setup bridge interface
+  nmcli:
+    conn_name: "{{ item.name }}"
+    ifname: "{{ item.name }}"
+    type: bridge
+    ip4: "{{ kvm_host_ipaddr }}"
+    gw4: "{{ kvm_host_gw }}"
+    state: present
+  with_items: "{{ libvirt_host_networks }}"
+  become: True
+
+- name: setup ethernet interface
+  nmcli:
+    conn_name: "{{ kvm_host_interface }}"
+    ifname: "{{ kvm_host_interface }}"
+    master: "{{ item.name }}"
+    state: present
+  with_items: "{{ libvirt_host_networks }}"
+  become: True

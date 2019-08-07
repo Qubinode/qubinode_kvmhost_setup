@@ -23,6 +23,13 @@ libvirt_services:
   - libvirtd
   - tuned
 
+libvirt_host_pool: []
+libvirt_host_networks: []
+kvm_host_ipaddr: {{ ansible_default_ipv4.address }}
+kvm_host_macaddr: {{ ansible_default_ipv4.macaddress }}
+kvm_host_interface: {{ ansible_default_ipv4.interface }}
+kvm_host_netmask: {{ ansible_default_ipv4.netmask }}
+kvm_host_gw: {{ ansible_default_ipv4.gateway }}
+
 storage_nic: false
 libvirt_disk: false
-

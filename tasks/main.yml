@@ -21,4 +21,8 @@
   register: start_tuned
   changed_when: start_tuned.rc != 0
 
-- meta: flush_handlers
+- name: configure libvirt network
+  include_tasks: networks.yml
+
+- name: Flush handlers
+  meta: flush_handlers

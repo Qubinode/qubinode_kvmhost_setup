@@ -1,0 +1,6 @@
+DEVICE="{{ item.name }}"
+ONBOOT="yes"
+TYPE=Bridge
+BOOTPROTO=static
+IPADDR= {{ kvm_host_ipaddr }}
+NETMASK= {{ kvm_host_netmask }}
