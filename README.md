@@ -1,6 +1,6 @@
 Role Name
 =========
-
+swygue.edge_host_setup
 
 Requirements
 ------------
@@ -10,7 +10,13 @@ Any pre-requisites that may not be covered by Ansible itself or the role should 
 Role Variables
 --------------
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+| variable  | definition |
+| ------------- | ------------- |
+| libvirt_host_networks | dictionary variable that creates libvirt network xml file. must set the name, mode, and bridge key |
+| libvirt_host_pool | Content Cell  |
+| kvm_host_ipaddr | default value is ansible_default_ipv4.address  |
+| kvm_host_interface | default value is ansible_default_ipv4.interface |
+| kvm_host_gw | default value is ansible_default_ipv4.gateway |
 
 Dependencies
 ------------
@@ -19,12 +25,21 @@ A list of other roles hosted on Galaxy should go here, plus any details in regar
 
 Example Playbook
 ----------------
-
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
-
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
+---
+- name: Ensure that Libvirt is configured
+  hosts: kvmhost
+  roles:
+    - role: swygue.edge.host_setup
+      libvirt_host_networks:
+        - name: brdg0
+          mode: bridge
+          bridge: brdg0
+       kvm_host_ipaddr: 192.168.1.58 {{ ansible_default_ipv4.address }}
+       kvm_host_interface: eno1
+       kvm_host_gw: 192.168.1.1
+       storage_nic: false
+       libvirt_disk: false
+     
 
 License
 -------
