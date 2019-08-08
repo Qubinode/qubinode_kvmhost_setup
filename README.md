@@ -25,22 +25,20 @@ A list of other roles hosted on Galaxy should go here, plus any details in regar
 
 Example Playbook
 ----------------
-```
----
-- name: Ensure that Libvirt is configured
-  hosts: kvmhost
-  roles:
-    - role: swygue.edge.host_setup
-      libvirt_host_networks:
-        - name: brdg0
-          mode: bridge
-          bridge: brdg0
-       kvm_host_ipaddr: 192.168.1.58 {{ ansible_default_ipv4.address }}
-       kvm_host_interface: eno1
-       kvm_host_gw: 192.168.1.1
-       storage_nic: false
-       libvirt_disk: false
-```     
+
+    ---
+    - name: Ensure that Libvirt is configured
+      hosts: all
+      roles:
+        - role: swygue.edge_homst_setup
+          libvirt_host_networks:
+            - name: br01
+              mode: bridge
+              bridge: br01
+          kvm_host_ipaddr: 192.168.1.4
+          kvm_host_interface: eno1
+          kvm_host_gw: 192.168.1.1
+   
 
 License
 -------

@@ -23,7 +23,6 @@ libvirt_services:
   - libvirtd
   - tuned
 
-libvirt_host_pool: []
 libvirt_host_networks: []
 kvm_host_ipaddr: {{ ansible_default_ipv4.address }}
 kvm_host_interface: {{ ansible_default_ipv4.interface }}
