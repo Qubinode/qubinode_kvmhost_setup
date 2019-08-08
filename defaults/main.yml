@@ -8,16 +8,17 @@ libvirt_pkgs:
   - libvirt-daemon
   - libvirt-client
   - virt-top
-  - cockpit-bridge
+  - cockpit
   - cockpit-networkmanager
-  - cockpit-packagekit
-  - cockpit-shell
+  - cockpit-dashboard
   - cockpit-storaged
-  - cockpit-ws
-  - openssh-server
+  - cockpit-packagekit
+  - cockpit-machines
+  - cockpit-sosreport
   - cockpit-kubernetes
   - cockpit-pcp
   - tuned
+  - openssh-server
 
 libvirt_services:
   - libvirtd
@@ -25,4 +26,3 @@ libvirt_services:
 
 storage_nic: false
 libvirt_disk: false
-
