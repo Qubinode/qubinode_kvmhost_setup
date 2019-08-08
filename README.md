@@ -25,6 +25,7 @@ A list of other roles hosted on Galaxy should go here, plus any details in regar
 
 Example Playbook
 ----------------
+```
 ---
 - name: Ensure that Libvirt is configured
   hosts: kvmhost
@@ -39,7 +40,7 @@ Example Playbook
        kvm_host_gw: 192.168.1.1
        storage_nic: false
        libvirt_disk: false
-     
+```     
 
 License
 -------
