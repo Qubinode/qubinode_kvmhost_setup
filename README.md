@@ -32,12 +32,13 @@ Example Playbook
       roles:
         - role: swygue.edge_homst_setup
           libvirt_host_networks:
-            - name: br01
+            - name: vmnet
               mode: bridge
               bridge: br01
           kvm_host_ipaddr: 192.168.1.4
           kvm_host_interface: eno1
           kvm_host_gw: 192.168.1.1
+          libvirt_vm_network: 
    
 
 License
