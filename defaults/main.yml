@@ -24,9 +24,9 @@ libvirt_services:
   - tuned
 
 libvirt_host_networks: []
-kvm_host_ipaddr: {{ ansible_default_ipv4.address }}
-kvm_host_interface: {{ ansible_default_ipv4.interface }}
-kvm_host_gw: {{ ansible_default_ipv4.gateway }}
+kvm_host_ipaddr: "{{ ansible_default_ipv4.address }}"
+kvm_host_interface: "{{ ansible_default_ipv4.interface }}"
+kvm_host_gw: "{{ ansible_default_ipv4.gateway }}"
 
 storage_nic: false
 libvirt_disk: false
