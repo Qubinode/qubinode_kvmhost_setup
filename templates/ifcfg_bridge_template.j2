@@ -1,0 +1,15 @@
+DEVICE={{ item.name }}
+TYPTE={{ item.Type }}
+ONBOOT=yes
+BRIDGE={{ item.bridge }}
+{% if kvm_host_bootproto == 'static' %}
+IPADDR={{ kvm_host_ipaddr }}
+GATEWAY={{ kvm_host_gw }}
+NETMASK={{ kvm_host_netmask }}
+BOOTPROTO=static
+{% else %}
+BOOTPROTO=dhcp
+{% endif %}
+ZONE=public
+DELAY=0
+

@@ -21,23 +21,39 @@
   with_items: "{{ libvirt_host_networks }}"
   become: True
 
+# - name: setup bridge interface
+#   nmcli:
+#     conn_name: "{{ item.bridge }}"
+#     ifname: "{{ item.bridge }}"
+#     type: bridge
+#     state: present
+#     autoconnect: yes
+#   with_items: "{{ libvirt_host_networks }}"
+#   become: True
+
+# - name: setup ethernet interface
+#   nmcli:
+#     conn_name: "{{ kvm_host_interface }}"
+#     ifname: "{{ kvm_host_interface }}"
+#     type: "{{ kvm_bridge_type }}"
+#     master: "{{ item.bridge }}"
+#     state: present
+#   with_items: "{{ libvirt_host_networks }}"
+#   become: True
+
 - name: setup bridge interface
-  nmcli:
-    conn_name: "{{ item.bridge }}"
-    ifname: "{{ item.bridge }}"
-    type: bridge
-    ip4: "{{ kvm_host_ipaddr }}"
-    gw4: "{{ kvm_host_gw }}"
-    state: present
+  template:
+    src: ifcfg_bridge_template.j2
+    dest: /etc/sysconfig/network-scripts/ifcfg-{{  }}
+    mode: 0640
   with_items: "{{ libvirt_host_networks }}"
   become: True
 
 - name: setup ethernet interface
-  nmcli:
-    conn_name: "{{ kvm_host_interface }}"
-    ifname: "{{ kvm_host_interface }}"
-    type: "{{ kvm_bridge_type }}"
-    master: "{{ item.bridge }}"
-    state: present
+  template:
+    src: ifcfg_device_template.j2
+    dest: /etc/sysconfig/network-scripts/ifcfg-{{ kvm_host_interface }}
+    mode: 0640
   with_items: "{{ libvirt_host_networks }}"
   become: True
+
