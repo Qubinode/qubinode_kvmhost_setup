@@ -38,7 +38,9 @@ Example Playbook
           kvm_host_ipaddr: '192.168.1.4'
           kvm_host_interface: 'eno1'
           kvm_host_gw: '192.168.1.1'
-          kvm_bridge_type: 'bridge-slave' 
+          kvm_bridge_type: 'bridge' 
+          kvm_host_bootproto: 'dhcp'
+          
    
 
 License
