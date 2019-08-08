@@ -27,6 +27,6 @@ libvirt_host_networks: []
 kvm_host_ipaddr: "{{ ansible_default_ipv4.address }}"
 kvm_host_interface: "{{ ansible_default_ipv4.interface }}"
 kvm_host_gw: "{{ ansible_default_ipv4.gateway }}"
-kvm_bridge_type: 'bridge-slave'
+kvm_bridge_type: 'bridge'
 storage_nic: false
 libvirt_disk: false
