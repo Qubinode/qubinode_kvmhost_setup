@@ -29,7 +29,7 @@
   with_items: "{{ libvirt_host_networks }}"
   become: True
 
-- name: setup ethernet interface
+- name: setup ethernet device interface
   template:
     src: ifcfg_device_template.j2
     dest: /etc/sysconfig/network-scripts/ifcfg-{{ kvm_host_interface }}
