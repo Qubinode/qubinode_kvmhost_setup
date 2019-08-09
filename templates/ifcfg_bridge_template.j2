@@ -1,5 +1,5 @@
 DEVICE={{ item.bridge }}
-TYPE={{ item.mode }}
+TYPE={{ item.mode|title }}
 ONBOOT=yes
 {% if kvm_host_bootproto == 'static' %}
 IPADDR={{ kvm_host_ipaddr }}
