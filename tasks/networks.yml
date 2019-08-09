@@ -21,26 +21,6 @@
   with_items: "{{ libvirt_host_networks }}"
   become: True
 
-# - name: setup bridge interface
-#   nmcli:
-#     conn_name: "{{ item.bridge }}"
-#     ifname: "{{ item.bridge }}"
-#     type: bridge
-#     state: present
-#     autoconnect: yes
-#   with_items: "{{ libvirt_host_networks }}"
-#   become: True
-
-# - name: setup ethernet interface
-#   nmcli:
-#     conn_name: "{{ kvm_host_interface }}"
-#     ifname: "{{ kvm_host_interface }}"
-#     type: "{{ kvm_bridge_type }}"
-#     master: "{{ item.bridge }}"
-#     state: present
-#   with_items: "{{ libvirt_host_networks }}"
-#   become: True
-
 - name: setup bridge interface
   template:
     src: ifcfg_bridge_template.j2
@@ -62,3 +42,4 @@
     state: restarted
     daemon_reload: yes
     name: network
+  become: True
