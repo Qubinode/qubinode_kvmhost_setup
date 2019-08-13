@@ -3,7 +3,7 @@
 - name: validate virtuaization extentions are available to this host
   include_tasks: validate.yml
 
-- name: configure shell extrans
+- name: configure shell extras
   include_tasks: configure_shell.yml
 
 - name: ensure libvirt packages are installed
