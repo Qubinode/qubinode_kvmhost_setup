@@ -37,12 +37,12 @@
   with_items: "{{ libvirt_host_networks }}"
   become: True
 
-- name: restart network service
-  systemd:
-    state: restarted
-    daemon_reload: yes
-    name: network
-  become: True
+#- name: restart network service
+#  systemd:
+#    state: restarted
+#    daemon_reload: yes
+#    name: network
+#  become: True
 
 - name: update /etc/resolv.conf
   template:
