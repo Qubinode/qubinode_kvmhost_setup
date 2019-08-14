@@ -37,7 +37,13 @@
   with_items: "{{ libvirt_host_networks }}"
   become: True
 
-#- name: restart network service
+- name: restart network service
+  service:
+    name: "{{ item }}"
+    state: restarted
+  with_items:
+    - network
+    - NetworkManager
 #  systemd:
 #    state: restarted
 #    daemon_reload: yes

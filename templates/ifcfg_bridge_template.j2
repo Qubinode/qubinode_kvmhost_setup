@@ -1,10 +1,11 @@
 DEVICE={{ item.bridge }}
+NAME=qubibr0
 TYPE={{ kvm_bridge_type }}
 ONBOOT=yes
 {% if kvm_host_bootproto == "dhcp" %}}
 BOOTPROTO={{ kvm_host_bootproto }}
 {% elif kvm_host_bootproto == "none" %}
-BOOTPROTO={{ kvm_host_bootproto }}
+BOOTPROTO=static
 IPADDR={{ kvm_host_ipaddr }}
 GATEWAY={{ kvm_host_gw }}
 PREFIX={{ kvm_host_mask_prefix }}
