@@ -43,3 +43,8 @@
     daemon_reload: yes
     name: network
   become: True
+
+- name: update /etc/resolv.conf
+  template:
+    src: resolv.conf.j2
+    dest: /etc/resolv.conf
