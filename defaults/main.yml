@@ -37,3 +37,6 @@ kvm_host_bootproto: 'dhcp'
 kvm_bridge_type: 'Bridge'
 storage_nic: false
 libvirt_disk: false
+kvm_host_ip: ""
+kvm_host_gw: ""
+kvm_host_mask_prefix: ""

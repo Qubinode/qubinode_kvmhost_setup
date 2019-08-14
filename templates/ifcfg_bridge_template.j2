@@ -1,6 +1,13 @@
 DEVICE={{ item.bridge }}
 TYPE={{ kvm_bridge_type }}
 ONBOOT=yes
+{% if kvm_host_bootproto == "dhcp" %}}
 BOOTPROTO={{ kvm_host_bootproto }}
+{% elif kvm_host_bootproto == "none" %}}
+BOOTPROTO={{ kvm_host_bootproto }}
+IPADDR={{ kvm_host_ip }}
+GATEWAY={{ kvm_host_gw }}
+PREFIx={{ kvm_host_mask_prefix }}
+{% endif %}}
 ZONE=public
 DELAY=0
