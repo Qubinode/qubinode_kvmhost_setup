@@ -55,7 +55,7 @@
     autoconnect: yes
   with_items: "{{ libvirt_host_networks }}"
   become: True
-nmcli con add type ethernet ifname eth1 master bridge-br0
+ 
 - name: restart network service
   systemd:
     state: restarted
