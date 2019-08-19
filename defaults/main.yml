@@ -26,6 +26,7 @@ kvm_host_gw: "{{ ansible_default_ipv4.gateway }}"
 kvm_host_macaddr: "{{ ansible_default_ipv4.macaddress }}"
 kvm_host_netmask: "{{ ansible_default_ipv4.netmask }}"
 kvm_host_bootproto: 'dhcp'
+kvm_host_mask_prefix: ""
 kvm_bridge_type: 'Bridge'
 storage_nic: false
 libvirt_disk: false

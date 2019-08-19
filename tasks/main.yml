@@ -27,5 +27,5 @@
 - name: configure libvirt network
   include_tasks: networks.yml
 
-- name: Flush handlers
-  meta: flush_handlers
+#- name: Flush handlers
+#  meta: flush_handlers
