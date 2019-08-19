@@ -26,8 +26,8 @@
     src: ifcfg_bridge_template.j2
     dest: /etc/sysconfig/network-scripts/ifcfg-{{ item.bridge }}
     mode: 0640
-  with_items: "{{ libvirt_host_networks }}"
-  become: True
+   with_items: "{{ libvirt_host_networks }}"
+   become: True
 
 - name: setup ethernet device interface
   template:
@@ -37,18 +37,39 @@
   with_items: "{{ libvirt_host_networks }}"
   become: True
 
+# the nmcli setup works
+#- name: setup bridge interface
+#  nmcli:
+#    type: "{{ item.mode }}"
+#    conn_name: "{{ item.bridge }}"
+#    state: present
+#    forwarddelay: '0'
+#    autoconnect: yes
+#  with_items: "{{ libvirt_host_networks }}"
+#  become: True
+
+#- name: setup ethernet device interface
+#  nmcli:
+#    type: "ethernet"
+#    conn_name: "{{ kvm_host_interface }}"
+#    master: "bridge-{{ item.bridge }}"
+#    state: present
+#    autoconnect: yes
+#  with_items: "{{ libvirt_host_networks }}"
+#  become: True
+
 # restarting the using iether of the below ansible module_defaults
 # breaks networking on rheron system. The interfaces are created, but without any netowkring details
 # using the command module  does not seems to introduce this issue.
-- name: restart network service
-  command: "systemctl restart {{ item }}"
-  args:
-    warn: no
-  changed_when: false
-  with_items:
-    - network
-    - NetworkManager
-    - libvirtd
+#- name: restart network service
+#  command: "systemctl restart {{ item }}"
+#  args:
+#    warn: no
+#  changed_when: false
+#  with_items:
+#    - network
+#    - NetworkManager
+#    - libvirtd
 
 #- name: restart network service
 #  service:
