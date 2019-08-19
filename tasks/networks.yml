@@ -21,44 +21,57 @@
   with_items: "{{ libvirt_host_networks }}"
   become: True
 
-# - name: setup bridge interface
-#   template:
-#     src: ifcfg_bridge_template.j2
-#     dest: /etc/sysconfig/network-scripts/ifcfg-{{ item.bridge }}
-#     mode: 0640
-#   with_items: "{{ libvirt_host_networks }}"
-#   become: True
-
-# - name: setup ethernet device interface
-#   template:
-#     src: ifcfg_device_template.j2
-#     dest: /etc/sysconfig/network-scripts/ifcfg-{{ kvm_host_interface }}
-#     mode: 0640
-#   with_items: "{{ libvirt_host_networks }}"
-#   become: True
 - name: setup bridge interface
-  nmcli:
-    type: "{{ item.mode }}"
-    conn_name: "{{ item.bridge }}"
-    state: present
-    forwarddelay: '0'
-    autoconnect: yes
+  template:
+    src: ifcfg_bridge_template.j2
+    dest: /etc/sysconfig/network-scripts/ifcfg-{{ item.bridge }}
+    mode: 0640
   with_items: "{{ libvirt_host_networks }}"
   become: True
 
 - name: setup ethernet device interface
-  nmcli:
-    type: "ethernet"
-    conn_name: "{{ kvm_host_interface }}"
-    master: "bridge-{{ item.bridge }}"
-    state: present
-    autoconnect: yes
+  template:
+    src: ifcfg_device_template.j2
+    dest: /etc/sysconfig/network-scripts/ifcfg-{{ kvm_host_interface }}
+    mode: 0640
   with_items: "{{ libvirt_host_networks }}"
   become: True
  
-- name: restart network service
-  systemd:
-    state: restarted
-    daemon_reload: yes
-    name: network
-  become: True
+# nmcli portion works
+#- name: setup bridge interface
+#  nmcli:
+#    type: "{{ item.mode }}"
+#    conn_name: "{{ item.bridge }}"
+#    state: present
+#    forwarddelay: '0'
+#    autoconnect: yes
+#  with_items: "{{ libvirt_host_networks }}"
+#  become: True
+
+#- name: setup ethernet device interface
+#  nmcli:
+#    type: "ethernet"
+#    conn_name: "{{ kvm_host_interface }}"
+#    master: "bridge-{{ item.bridge }}"
+#    state: present
+#    autoconnect: yes
+#  with_items: "{{ libvirt_host_networks }}"
+#  become: True
+
+#- name: restart network service
+#  service:
+#    name: "{{ item }}"
+#    state: restarted
+#  with_items:
+#    - network
+#    - NetworkManager
+#  systemd:
+#    state: restarted
+#    daemon_reload: yes
+#    name: network
+#  become: True
+
+- name: update /etc/resolv.conf
+  template:
+    src: resolv.conf.j2
+    dest: /etc/resolv.conf

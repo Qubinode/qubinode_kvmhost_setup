@@ -1,6 +1,8 @@
 DEVICE={{ kvm_host_interface }}
+NAME=qubibr0_slave
 TYPE=Ethernet
 HWADDR={{ kvm_host_macaddr }}
+BOOTPROTO=none
 ONBOOT=yes
 BRIDGE={{ item.bridge }}
 ZONE=public
