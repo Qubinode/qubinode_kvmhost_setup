@@ -36,8 +36,8 @@
     mode: 0640
   with_items: "{{ libvirt_host_networks }}"
   become: True
- 
-# nmcli portion works
+
+# the nmcli setup works
 #- name: setup bridge interface
 #  nmcli:
 #    type: "{{ item.mode }}"
@@ -57,6 +57,19 @@
 #    autoconnect: yes
 #  with_items: "{{ libvirt_host_networks }}"
 #  become: True
+
+# restarting the using iether of the below ansible module_defaults
+# breaks networking on rheron system. The interfaces are created, but without any netowkring details
+# using the command module  does not seems to introduce this issue.
+- name: restart network service
+  command: "systemctl restart {{ item }}"
+  args:
+    warn: no
+  changed_when: false
+  with_items:
+    - network
+    - NetworkManager
+    - libvirtd
 
 #- name: restart network service
 #  service:
