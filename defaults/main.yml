@@ -1,33 +1,30 @@
 ---
 # KVM host packages
-qubi_required_pkgs: | 
+libvirt_pkgs: | 
    "virt-install, libvirt-daemon-config-network, libvirt-daemon-kvm, 
    libguestfs-tools, libvirt-client, qemu-kvm, nfs-utils, libvirt-daemon, 
-   libvirt-client, virt-top, cockpit, cockpit-networkmanager, cockpit-dashboard, 
-   cockpit-storaged, cockpit-packagekit, cockpit-machines, cockpit-sosreport, 
-   cockpit-kubernetes, cockpit-pcp, cockpit-bridge, tuned, openssh-server, 
-   wget, git, net-tools, bind-utils, yum-utils, iptables-services, bridge-utils, 
-   bash-completion, kexec-tools, sos, psacct, vim, atomic-openshift-clients, ansible, 
-   pyOpenSSL, docker, device-mapper-event-libs, device-mapper-libs, httpd-tools, 
-   java-1.8.0-openjdk-devel.x86_64, tmux, patch, openshift-ansible" 
+   libvirt-client, virt-top, tuned, openssh-server, wget, git, net-tools, 
+   bind-utils, yum-utils, iptables-services, bridge-utils, bash-completion, 
+   kexec-tools, sos, psacct, vim, pyOpenSSL, device-mapper-event-libs, 
+   device-mapper-libs, httpd-tools, java-1.8.0-openjdk-devel.x86_64, tmux, 
+   patch" 
 
 libvirt_services:
   - libvirtd
   - tuned
 
 libvirt_host_networks:
-  - name: qubinet
-    mode: bridge
-    bridge: 'qubibr0'
+  - name: ""
+    mode: ""
+    bridge: ""
 
-kvm_host_ipaddr: "{{ ansible_default_ipv4.address }}"
-kvm_host_interface: "{{ ansible_default_ipv4.interface }}"
-kvm_host_gw: "{{ ansible_default_ipv4.gateway }}"
-kvm_host_macaddr: "{{ ansible_default_ipv4.macaddress }}"
-kvm_host_netmask: "{{ ansible_default_ipv4.netmask }}"
-kvm_host_bootproto: 'dhcp'
+kvm_host_ip: ""
+kvm_host_interface: ""
+kvm_host_gw: ""
+kvm_host_macaddr: ""
+kvm_bridge_type: "Bridge"
+kvm_host_bootproto: ""
 kvm_host_mask_prefix: ""
-kvm_bridge_type: 'Bridge'
 storage_nic: false
 libvirt_disk: false
 ssh_user: ""
