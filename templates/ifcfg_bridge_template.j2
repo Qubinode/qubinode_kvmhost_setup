@@ -6,7 +6,7 @@ ONBOOT=yes
 BOOTPROTO={{ kvm_host_bootproto }}
 {% elif kvm_host_bootproto == "none" %}
 BOOTPROTO=static
-IPADDR={{ kvm_host_ipaddr }}
+IPADDR={{ kvm_host_ip }}
 GATEWAY={{ kvm_host_gw }}
 PREFIX={{ kvm_host_mask_prefix }}
 {% endif %}
