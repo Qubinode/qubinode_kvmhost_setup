@@ -1,13 +1,37 @@
 ---
 # KVM host packages
-libvirt_pkgs: | 
-   "virt-install, libvirt-daemon-config-network, libvirt-daemon-kvm, 
-   libguestfs-tools, libvirt-client, qemu-kvm, nfs-utils, libvirt-daemon, 
-   libvirt-client, virt-top, tuned, openssh-server, wget, git, net-tools, 
-   bind-utils, yum-utils, iptables-services, bridge-utils, bash-completion, 
-   kexec-tools, sos, psacct, vim, pyOpenSSL, device-mapper-event-libs, 
-   device-mapper-libs, httpd-tools, java-1.8.0-openjdk-devel.x86_64, tmux, 
-   patch" 
+libvirt_pkgs:
+   - virt-install
+   - libvirt-daemon-config-network
+   - libvirt-daemon-kvm
+   - libguestfs-tools
+   - libvirt-client
+   - qemu-kvm
+   - nfs-utils
+   - libvirt-daemon
+   - libvirt-client
+   - virt-top
+   - tuned
+   - openssh-server
+   - wget
+   - git
+   - net-tools
+   - bind-utils
+   - yum-utils
+   - iptables-services
+   - bridge-utils
+   - bash-completion
+   - kexec-tools
+   - sos
+   - psacct
+   - vim
+   - pyOpenSSL
+   - device-mapper-event-libs
+   - device-mapper-libs
+   - httpd-tools
+   - java-1.8.0-openjdk-devel.x86_64
+   - tmux
+   - patch
 
 libvirt_services:
   - libvirtd

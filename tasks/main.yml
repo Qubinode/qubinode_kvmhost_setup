@@ -7,10 +7,9 @@
   include_tasks: configure_shell.yml
 
 - name: ensure libvirt packages are installed
-  yum:
-    name: "{{ libvirt_pkgs }}"
-    state: present
-    update_cache : yes
+  shell: >
+    yum install -y "{{ item }}"
+  loop: "{{ libvirt_pkgs }}"
 
 - name: enable libvirt services
   service:
