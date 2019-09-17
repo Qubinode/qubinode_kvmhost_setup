@@ -6,7 +6,11 @@ search {{ search_domains|join(' ') }}
 {% if vm_domain != "" %}
 domain {{ vm_domain }}
 {% endif %}
+{% if idm_public_ip != "" %}}
+nameserver {{ idm_public_ip }}
+{% elif idm_public_ip == "" %}
 {% for ns in dns_servers %}
 nameserver {{ ns }}
 {% endfor %}
+{% endif %}
 options rotate timeout:1

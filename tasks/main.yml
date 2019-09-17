@@ -1,6 +1,6 @@
 ---
 
-- name: validate virtuaization extentions are available to this host
+- name: validate virtualization extensions are available to this host
   include_tasks: validate.yml
 
 - name: configure shell extras
@@ -8,8 +8,13 @@
 
 - name: ensure libvirt packages are installed
   shell: >
-    yum install -y "{{ item }}"
+    rpm -q "{{ item }}" || yum install -y "{{ item }}" && echo yes
+  args:
+    warn: false
   loop: "{{ libvirt_pkgs }}"
+  register: pkg_installed
+  changed_when: pkg_installed.stdout == 'yes'
+
 
 - name: enable libvirt services
   service:
