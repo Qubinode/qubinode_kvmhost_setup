@@ -30,6 +30,7 @@
 
 - name: configure libvirt network
   include_tasks: networks.yml
+  when: configure_bridge
 
 - name: configure libvirt storage pool
   include_tasks: storage_pool.yml
