@@ -31,5 +31,8 @@
 - name: configure libvirt network
   include_tasks: networks.yml
 
+- name: configure libvirt storage pool
+  include_tasks: storage_pool.yml
+
 #- name: Flush handlers
 #  meta: flush_handlers

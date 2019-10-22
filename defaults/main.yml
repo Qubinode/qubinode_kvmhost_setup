@@ -49,6 +49,12 @@ kvm_host_macaddr: ""
 kvm_bridge_type: "Bridge"
 kvm_host_bootproto: ""
 kvm_host_mask_prefix: ""
-storage_nic: false
-libvirt_disk: false
-ssh_user: ""
+ssh_username: ""
+
+kvm_host_libvirt_dir: /var/lib/libvirt/images
+
+libvirt_host_storage_pools:
+  - name: default
+    state: active
+    autostart: yes
+    path: "{{ kvm_host_libvirt_dir }}"

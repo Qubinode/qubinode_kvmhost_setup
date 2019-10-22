@@ -42,26 +42,6 @@
   with_items: "{{ libvirt_host_networks }}"
   become: True
 
-# the nmcli setup works
-#- name: setup bridge interface
-#  nmcli:
-#    type: "{{ item.mode }}"
-#    conn_name: "{{ item.bridge }}"
-#    state: present
-#    forwarddelay: '0'
-#    autoconnect: yes
-#  with_items: "{{ libvirt_host_networks }}"
-#  become: True
-
-#- name: setup ethernet device interface
-#  nmcli:
-#    type: "ethernet"
-#    conn_name: "{{ kvm_host_interface }}"
-#    master: "bridge-{{ item.bridge }}"
-#    state: present
-#    autoconnect: yes
-#  with_items: "{{ libvirt_host_networks }}"
-#  become: True
 
 # restarting the using iether of the below ansible module_defaults
 # breaks networking on rheron system. The interfaces are created, but without any netowkring details
@@ -75,19 +55,6 @@
     - network
     - NetworkManager
     - libvirtd
-
-#- name: restart network service
-#  service:
-#    name: "{{ item }}"
-#    state: restarted
-#  with_items:
-#    - network
-#    - NetworkManager
-#  systemd:
-#    state: restarted
-#    daemon_reload: yes
-#    name: network
-#  become: True
 
 - name: update /etc/resolv.conf
   template:
