@@ -28,14 +28,13 @@
   register: start_tuned
   changed_when: start_tuned.rc != 0
 
-- name: configure libvirt network
-  include_tasks: networks.yml
-  when: configure_bridge
-
 - name: configure bridge interface for libvirt
   include_tasks: bridge_interface.yml
   when: configure_bridge
-
+  
+- name: configure libvirt network
+  include_tasks: networks.yml
+  
 - name: configure libvirt storage pool
   include_tasks: storage_pool.yml
 
