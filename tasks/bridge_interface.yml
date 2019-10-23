@@ -1,0 +1,40 @@
+---
+- name: delete any previous failed attempts to configure bridge interface
+  file:
+    path: /etc/sysconfig/network-scripts/ifcfg-
+    state: absent
+
+- name: setup bridge interface
+  template:
+    src: ifcfg_bridge_template.j2
+    dest: /etc/sysconfig/network-scripts/ifcfg-{{ item.bridge }}
+    mode: 0640
+  with_items: "{{ libvirt_host_networks }}"
+  become: True
+
+- name: setup ethernet device interface
+  template:
+    src: ifcfg_device_template.j2
+    dest: /etc/sysconfig/network-scripts/ifcfg-{{ kvm_host_interface }}
+    mode: 0640
+  with_items: "{{ libvirt_host_networks }}"
+  become: True
+
+# Using the systemd module to restart networking seems to not properly panos_restart
+# the networking subsystem, further debugging is required to find root issue.
+# The command module gives us the behaviour we expect which is network restart without loosing
+# connectivity and the bridge interface comes up.
+- name: restart network service
+  command: "systemctl restart {{ item }}"
+  args:
+    warn: no
+  changed_when: false
+  with_items:
+    - network
+    - NetworkManager
+    - libvirtd
+
+- name: update /etc/resolv.conf
+  template:
+    src: resolv.conf.j2
+    dest: /etc/resolv.conf

@@ -37,10 +37,33 @@ libvirt_services:
   - libvirtd
   - tuned
 
-libvirt_host_networks:
-  - name: ""
-    mode: ""
-    bridge: ""
+#libvirt_host_networks:
+#  - name: "{{ vm_libvirt_net }}"
+#    mode: nat
+#    bridge: ""
+#    int_domain: compute.local
+#    public_domain: poc.lab.example
+#    subnet: "192.168.50.0"
+#    gw: 192.168.122.1
+#    mask: 255.255.255.0
+#    dhcp_start: 192.168.122.2
+#    dhcp_end: 192.168.122.254
+#    mac: 52:54:00:bd:f6:21
+#    count: 3
+#    xml_file: "nat_network.xml.j2" # required
+#  - name: "{{ vm_libvirt_net }}"
+#    mode: bridge
+#    bridge: "br0"
+#    int_domain: ""
+#    public_domain: ""
+#    subnet: ""
+#    gw: ""
+#    mask: ""
+#    dhcp_start: ""
+#    dhcp_end: ""
+#    mac: ""
+#    count: 3
+#    xml_file: "br_network.xml.j2" # required
 
 kvm_host_ip: ""
 kvm_host_interface: ""
@@ -58,3 +81,6 @@ libvirt_host_storage_pools:
     state: active
     autostart: yes
     path: "{{ kvm_host_libvirt_dir }}"
+
+# set to false to skip creating a bridge interface
+configure_bridge: true

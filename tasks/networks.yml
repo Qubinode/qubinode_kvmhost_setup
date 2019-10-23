@@ -3,7 +3,7 @@
   virt_net:
     name: "{{ item.name }}"
     command: define
-    xml: '{{ (lookup("template", "br_network.xml.j2")) }}'
+    xml: '{{ (lookup("template", xml_file)) }}'
   with_items: "{{ libvirt_host_networks }}"
   become: True
 
@@ -20,43 +20,3 @@
     autostart: yes
   with_items: "{{ libvirt_host_networks }}"
   become: True
-
-- name: delete any previous failed attempts
-  file:
-    path: /etc/sysconfig/network-scripts/ifcfg-
-    state: absent
-
-- name: setup bridge interface
-  template:
-    src: ifcfg_bridge_template.j2
-    dest: /etc/sysconfig/network-scripts/ifcfg-{{ item.bridge }}
-    mode: 0640
-  with_items: "{{ libvirt_host_networks }}"
-  become: True
-
-- name: setup ethernet device interface
-  template:
-    src: ifcfg_device_template.j2
-    dest: /etc/sysconfig/network-scripts/ifcfg-{{ kvm_host_interface }}
-    mode: 0640
-  with_items: "{{ libvirt_host_networks }}"
-  become: True
-
-
-# restarting the using iether of the below ansible module_defaults
-# breaks networking on rheron system. The interfaces are created, but without any netowkring details
-# using the command module  does not seems to introduce this issue.
-- name: restart network service
-  command: "systemctl restart {{ item }}"
-  args:
-    warn: no
-  changed_when: false
-  with_items:
-    - network
-    - NetworkManager
-    - libvirtd
-
-- name: update /etc/resolv.conf
-  template:
-    src: resolv.conf.j2
-    dest: /etc/resolv.conf

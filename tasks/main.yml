@@ -32,6 +32,10 @@
   include_tasks: networks.yml
   when: configure_bridge
 
+- name: configure bridge interface for libvirt
+  include_tasks: bridge_interface.yml
+  when: configure_bridge
+
 - name: configure libvirt storage pool
   include_tasks: storage_pool.yml
 
