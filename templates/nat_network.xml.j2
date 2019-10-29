@@ -22,12 +22,12 @@
     <ip address='{{ item.subnet.split('.')[:3] | join('.')}}.1' netmask='{{ item.mask }}'>
         <dhcp>
             <range start='{{ item.subnet.split('.')[:3] | join('.')}}.10' end='{{ item.subnet.split('.')[:3] | join('.')}}.250'/>
-            <host mac='{{ mac_start }}{{ '%02x' % item.subnet.split('.')[1]|int }}:{{ '%02x' % item.subnet.split('.')[2]|int }}:{{ '%02x' % 2 }}' name='bootstrap.{{ item.int_domain }}' ip='{{ item.subnet.split('.')[:3] | join('.')}}.2'/>
+            <host mac='{{ item.mac_start }}{{ '%02x' % item.subnet.split('.')[1]|int }}:{{ '%02x' % item.subnet.split('.')[2]|int }}:{{ '%02x' % 2 }}' name='bootstrap.{{ item.int_domain }}' ip='{{ item.subnet.split('.')[:3] | join('.')}}.2'/>
             {% for id in range(0, item.master_count | int) -%}
-            <host mac='{{ mac_start }}{{ '%02x' % item.subnet.split('.')[1]|int }}:{{ '%02x' % item.subnet.split('.')[2]|int }}:{{ '%02x' % (10 + id) }}' name='master-{{ id }}.{{ item.int_domain }}' ip='{{ item.subnet.split('.')[:3] | join('.')}}.{{ 10 + id }}'/>
+            <host mac='{{ item.mac_start }}{{ '%02x' % item.subnet.split('.')[1]|int }}:{{ '%02x' % item.subnet.split('.')[2]|int }}:{{ '%02x' % (10 + id) }}' name='master-{{ id }}.{{ item.int_domain }}' ip='{{ item.subnet.split('.')[:3] | join('.')}}.{{ 10 + id }}'/>
             {% endfor -%}
             {% for id in range(0, item.compute_count | int) -%}
-            <host mac='{{ mac_start }}{{ '%02x' % item.subnet.split('.')[1]|int }}:{{ '%02x' % item.subnet.split('.')[2]|int }}:{{ '%02x' % (10 + item.count|int + id) }}' name='compute-{{ id }}.{{ item.int_domain }}' ip='{{ item.subnet.split('.')[:3] | join('.')}}.{{ 10 + item.count|int + id }}'/>
+            <host mac='{{ item.mac_start }}{{ '%02x' % item.subnet.split('.')[1]|int }}:{{ '%02x' % item.subnet.split('.')[2]|int }}:{{ '%02x' % (10 + item.count|int + id) }}' name='compute-{{ id }}.{{ item.int_domain }}' ip='{{ item.subnet.split('.')[:3] | join('.')}}.{{ 10 + item.count|int + id }}'/>
             {% endfor %}
         </dhcp>
     </ip>
