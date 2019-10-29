@@ -8,7 +8,7 @@ BOOTPROTO={{ item.ifcfg_bootproto }}
 BOOTPROTO=static
 IPADDR={{ item.ipaddress }}
 GATEWAY={{ item.gateway }}
-PREFIX={{ item.mas_prefix }}
+PREFIX={{ item.mask_prefix }}
 {% endif %}
 ZONE=public
 DELAY=0
