@@ -37,36 +37,29 @@ libvirt_services:
   - libvirtd
   - tuned
 
-#libvirt_host_networks:
-#  - name: "{{ vm_libvirt_net }}"
-#    mode: nat
-#    bridge: ""
-#    int_domain: compute.local
-#    public_domain: poc.lab.example
-#    subnet: "192.168.50.0"
-#    gw: 192.168.122.1
-#    mask: 255.255.255.0
-#    subnet: ""
-#    dhcp_start: 192.168.122.2
-#    dhcp_end: 192.168.122.254
-#    mac: 52:54:00:bd:f6:21
-#    master_count: 3
-#    compute_count: 3
-#    xml_file: "nat_network.xml.j2" # required
-#  - name: "{{ vm_libvirt_net }}"
-#    mode: bridge
-#    bridge: "br0"
-#    int_domain: ""
-#    public_domain: ""
-#    subnet: ""
-#    gw: ""
-#    mask: ""
-#    subnet: ""
-#    dhcp_start: ""
-#    dhcp_end: ""
-#    mac: ""
-#    count: 3
-#    xml_file: "br_network.xml.j2" # required
+# This hash defines all the libvirt networks that should be created
+# The example below defines a bridge and nat network.
+# The bridge network is needed for ocp3 installs, IdM and anything else that needs direct
+# access to the host network.
+# The nat network is primarly for OCP4. Perhaps it will be use for other things in the furture.
+# If there are other types of networks you want to support, make sure
+# to create the associated libvirt network xml template
+
+libvirt_host_networks:
+  - name: "{{ cluster_name }}"
+    create: true
+    mode: nat
+    int_domain: compute.local
+    external_domain: "{{ public_domain }}"
+    mac_start: "52:54:00:"
+    master_count: 3
+    compute_count: 3
+    xml_file: "nat_network.xml.j2"
+  - name: "{{ vm_libvirt_net }}"
+    create: true
+    mode: bridge
+    bridge_device: "{{ qubinode_bridge_name }}"
+    xml_file: "br_network.xml.j2"  required
 
 kvm_host_ip: ""
 kvm_host_interface: ""
