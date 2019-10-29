@@ -3,7 +3,7 @@
   virt_net:
     name: "{{ item.name }}"
     command: define
-    xml: '{{ (lookup("template", item.xml_file)) }}'
+    xml: '{{ (lookup("template", 'br_network.xml.j2')) }}'
   with_items: "{{ libvirt_host_networks }}"
   when: item.mode == 'bridge' and item.create|bool
   become: True
@@ -12,7 +12,7 @@
   virt_net:
     name: "{{ item.name }}"
     command: define
-    xml: '{{ (lookup("template", item.xml_file)) }}'
+    xml: '{{ (lookup("template", 'nat_network.xml.j2')) }}'
   with_items: "{{ libvirt_host_networks }}"
   when: item.mode == 'nat' and item.create|bool
   become: True
