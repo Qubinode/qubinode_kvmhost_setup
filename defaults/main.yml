@@ -59,7 +59,7 @@ libvirt_host_networks:
     create: true
     mode: bridge
     bridge_device: "{{ qubinode_bridge_name }}"
-    xml_file: "br_network.xml.j2"  required
+    xml_file: "br_network.xml.j2"
 
 kvm_host_ip: ""
 kvm_host_interface: ""
