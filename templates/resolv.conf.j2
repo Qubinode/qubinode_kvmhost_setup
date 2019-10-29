@@ -6,7 +6,7 @@ search {{ search_domains|join(' ') }}
 {% if kvm_host_domain != "" %}
 domain {{ kvm_host_domain }}
 {% endif %}
-{% if kvm_host_dns_server != "" %}}
+{% if kvm_host_dns_server != "" %}
 nameserver {{ kvm_host_dns_server }}
 {% elif kvm_host_dns_server == "" %}
 {% for ns in kvm_host_dns_servers %}
