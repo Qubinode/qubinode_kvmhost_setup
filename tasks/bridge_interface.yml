@@ -16,7 +16,7 @@
 - name: setup ethernet device interface
   template:
     src: ifcfg_device_template.j2
-    dest: /etc/sysconfig/network-scripts/ifcfg-{{ kvm_host_interface }}
+    dest: /etc/sysconfig/network-scripts/ifcfg-{{ item.bridge_slave_dev }}
     mode: 0640
   with_items: "{{ libvirt_host_networks }}"
   become: True
