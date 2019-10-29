@@ -69,6 +69,11 @@ kvm_bridge_type: "Bridge"
 kvm_host_bootproto: ""
 kvm_host_mask_prefix: ""
 ssh_username: ""
+kvm_host_domain: "lab.example"
+kvm_host_dns_server: "1.1.1.1"
+dns_servers:
+  - "{{ dns_server }}"
+  - "8.8.8.8"
 
 kvm_host_libvirt_dir: /var/lib/libvirt/images
 

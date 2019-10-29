@@ -3,13 +3,13 @@
 {% if search_domains | length > 0 %}
 search {{ search_domains|join(' ') }}
 {% endif %}
-{% if vm_domain != "" %}
-domain {{ vm_domain }}
+{% if kvm_host_domain != "" %}
+domain {{ kvm_host_domain }}
 {% endif %}
-{% if idm_public_ip != "" %}}
-nameserver {{ idm_public_ip }}
-{% elif idm_public_ip == "" %}
-{% for ns in dns_servers %}
+{% if kvm_host_dns_server != "" %}}
+nameserver {{ kvm_host_dns_server }}
+{% elif kvm_host_dns_server == "" %}
+{% for ns in kvm_host_dns_servers %}
 nameserver {{ ns }}
 {% endfor %}
 {% endif %}

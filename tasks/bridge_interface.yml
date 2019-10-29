@@ -11,6 +11,7 @@
     mode: 0640
   with_items: "{{ libvirt_host_networks }}"
   when: item.mode == 'bridge'
+  register: bridge_device
   become: True
 
 - name: setup ethernet device interface
@@ -20,6 +21,7 @@
     mode: 0640
   with_items: "{{ libvirt_host_networks }}"
   become: True
+  register: slave_device
   when: item.mode == 'bridge'
 
 # Using the systemd module to restart networking seems to not properly panos_restart
@@ -35,6 +37,7 @@
     - network
     - NetworkManager
     - libvirtd
+  when: bridge_device.changed or slave_device.changed
 
 - name: update /etc/resolv.conf
   template:
