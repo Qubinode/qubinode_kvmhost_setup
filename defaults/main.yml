@@ -46,10 +46,12 @@ libvirt_services:
 #    subnet: "192.168.50.0"
 #    gw: 192.168.122.1
 #    mask: 255.255.255.0
+#    subnet: ""
 #    dhcp_start: 192.168.122.2
 #    dhcp_end: 192.168.122.254
 #    mac: 52:54:00:bd:f6:21
-#    count: 3
+#    master_count: 3
+#    compute_count: 3
 #    xml_file: "nat_network.xml.j2" # required
 #  - name: "{{ vm_libvirt_net }}"
 #    mode: bridge
@@ -59,6 +61,7 @@ libvirt_services:
 #    subnet: ""
 #    gw: ""
 #    mask: ""
+#    subnet: ""
 #    dhcp_start: ""
 #    dhcp_end: ""
 #    mac: ""
