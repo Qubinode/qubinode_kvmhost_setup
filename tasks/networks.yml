@@ -1,10 +1,20 @@
 ---
-- name: Ensure libvirt networks are defined
+- name: Ensure libvirt bridge network is defined
   virt_net:
     name: "{{ item.name }}"
     command: define
     xml: '{{ (lookup("template", item.xml_file)) }}'
   with_items: "{{ libvirt_host_networks }}"
+  when: item.mode == 'bridge' and item.create|bool
+  become: True
+
+- name: Ensure libvirt nat network is defined
+  virt_net:
+    name: "{{ item.name }}"
+    command: define
+    xml: '{{ (lookup("template", item.xml_file)) }}'
+  with_items: "{{ libvirt_host_networks }}"
+  when: item.mode == 'nat' and item.create|bool
   become: True
 
 - name: Ensure libvirt networks are active
