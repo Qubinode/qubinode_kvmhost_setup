@@ -2,7 +2,7 @@ DEVICE={{ item.bridge_device }}
 NAME={{ item.bridge_device }}
 TYPE={{ item.ifcfg_type }}
 ONBOOT=yes
-{% if item.ifcfg_bootproto == "dhcp" %}}
+{% if item.ifcfg_bootproto == "dhcp" %}
 BOOTPROTO={{ item.ifcfg_bootproto }}
 {% elif item.ifcfg_bootproto == "none" %}
 BOOTPROTO=static
