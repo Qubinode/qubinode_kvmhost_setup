@@ -37,3 +37,4 @@ kvm_host_bootproto: 'dhcp'
 kvm_bridge_type: 'Bridge'
 storage_nic: false
 libvirt_disk: false
+use_dns: idm # use idm or use libvirt
