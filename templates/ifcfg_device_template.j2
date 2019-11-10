@@ -1,8 +1,8 @@
-DEVICE={{ item.bridge_slave_dev }}
-NAME={{ item.bridge_device }}_slave
+DEVICE={{ libvirt_host_networks[1].bridge_slave_dev }}
+NAME={{ libvirt_host_networks[1].bridge_device }}_slave
 TYPE=Ethernet
-HWADDR={{ item.mac }}
+HWADDR={{ libvirt_host_networks[1].mac }}
 BOOTPROTO=none
 ONBOOT=yes
-BRIDGE={{ item.bridge_device }}
+BRIDGE={{ libvirt_host_networks[1].bridge_device }}
 ZONE=public
