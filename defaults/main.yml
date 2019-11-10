@@ -4,7 +4,7 @@ libvirt_pkgs:
   - libvirt-daemon-config-network
   - libvirt-daemon-kvm
   - libguestfs-tools
-  - libvirt-client 
+  - libvirt-client
   - qemu-kvm
   - nfs-utils
   - libvirt-daemon
