@@ -2,6 +2,33 @@
 - fail: msg="Bailing out. this play requires 'kvm_host_ip' KVM host ip"
   when: kvm_host_ip |length == 0
 
+- fail: msg="Bailing out. this play requires 'kvm_host_interface' KVM host interface"
+  when: kvm_host_interface |length == 0
+
+- fail: msg="Bailing out. this play requires 'kvm_host_mask_prefix' KVM subnet mask prefix"
+  when: kvm_host_mask_prefix |length == 0
+
+- fail: msg="Bailing out. this play requires 'kvm_host_gw' KVM host kvm host gateway"
+  when: kvm_host_gw |length == 0
+
+- fail: msg="Bailing out. this play requires 'ssh_username' ssh username"
+  when: ssh_username |length == 0
+
+- fail: msg="Bailing out. this play requires 'kvm_host_domain' kvm host domain"
+  when: kvm_host_domain |length == 0
+
+- fail: msg="Bailing out. this play requires 'kvm_host_dns_server' kvm host dns server"
+  when: kvm_host_dns_server |length == 0
+
+- fail: msg="Bailing out. this play requires 'kvm_host_bootproto' KVM host bootproto"
+  when: kvm_host_bootproto |length == 0
+
+- fail: msg="Bailing out. this play requires 'kvm_bridge_type' KVM  bridge type"
+  when: kvm_bridge_type |length == 0
+
+- fail: msg="Bailing out. this play requires 'qubinode_bridge_name' qubinode bridge name"
+  when: qubinode_bridge_name |length == 0
+
 - fail: msg="Bailing out. this play requires 'libvirt_host_networks[0].mac_start' MAC start not found for nat network"
   when: libvirt_host_networks[0].mac_start |length == 0
 
