@@ -1,10 +1,20 @@
 ---
-- name: Ensure libvirt networks are defined
+- name: Ensure libvirt bridge network is defined
   virt_net:
     name: "{{ item.name }}"
     command: define
     xml: '{{ (lookup("template", "br_network.xml.j2")) }}'
   with_items: "{{ libvirt_host_networks }}"
+  when: item.mode == 'bridge' and item.create|bool
+  become: True
+
+- name: Ensure libvirt nat network is defined
+  virt_net:
+    name: "{{ item.name }}"
+    command: define
+    xml: '{{ (lookup("template", "nat_network.xml.j2")) }}'
+  with_items: "{{ libvirt_host_networks }}"
+  when: item.mode == 'nat' and item.create|bool
   become: True
 
 - name: Ensure libvirt networks are active
@@ -19,27 +29,4 @@
     name: "{{ item.name }}"
     autostart: yes
   with_items: "{{ libvirt_host_networks }}"
-  become: True
-
-- name: setup bridge interface
-  template:
-    src: ifcfg_bridge_template.j2
-    dest: /etc/sysconfig/network-scripts/ifcfg-{{ item.bridge }}
-    mode: 0640
-  with_items: "{{ libvirt_host_networks }}"
-  become: True
-
-- name: setup ethernet device interface
-  template:
-    src: ifcfg_device_template.j2
-    dest: /etc/sysconfig/network-scripts/ifcfg-{{ kvm_host_interface }}
-    mode: 0640
-  with_items: "{{ libvirt_host_networks }}"
-  become: True
-
-- name: restart network service
-  systemd:
-    state: restarted
-    daemon_reload: yes
-    name: network
   become: True

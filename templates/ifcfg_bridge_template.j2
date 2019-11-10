@@ -1,6 +1,14 @@
-DEVICE={{ item.bridge }}
-TYPE={{ kvm_bridge_type }}
+DEVICE={{ item.bridge_device }}
+NAME={{ item.bridge_device }}
+TYPE={{ item.ifcfg_type }}
 ONBOOT=yes
-BOOTPROTO={{ kvm_host_bootproto }}
+{% if item.ifcfg_bootproto == "dhcp" %}
+BOOTPROTO={{ item.ifcfg_bootproto }}
+{% elif item.ifcfg_bootproto == "none" %}
+BOOTPROTO=static
+IPADDR={{ item.ipaddress }}
+GATEWAY={{ item.gateway }}
+PREFIX={{ item.mask_prefix }}
+{% endif %}
 ZONE=public
 DELAY=0
