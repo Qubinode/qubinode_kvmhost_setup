@@ -10,8 +10,6 @@
             <hostname>api-int.{{ item.external_domain }}</hostname>
         </host>
         <host ip='{{ kvm_host_ipaddr}}'>
-            <hostname>*.apps.{{ item.external_domain }}</hostname>
-            <hostname>apps.{{ item.external_domain }}</hostname>
             <hostname>api.{{ item.external_domain }}</hostname>
         </host>
         {% for id in range(0, item.master_count | int) -%}
