@@ -6,7 +6,7 @@
   when: kvm_host_interface |length == 0
 
 - fail: msg="Bailing out. this play requires 'kvm_host_mask_prefix' KVM subnet mask prefix"
-  when: kvm_host_mask_prefix |length == 0
+  when: kvm_host_mask_prefix is undefined
 
 - fail: msg="Bailing out. this play requires 'kvm_host_gw' KVM host kvm host gateway"
   when: kvm_host_gw |length == 0
