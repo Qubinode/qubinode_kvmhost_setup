@@ -1,28 +1,46 @@
 ---
+- name: Display all variables/facts known for a host
+  debug:
+    var: libvirt_host_networks[1]
+
+- fail: msg="Bailing out. this play requires libvirt_host_networks[1].bridge_device"
+  with_libvirt_host_networks[1]s: "{{ libvirt_host_networks[1] }}"
+  when:
+    - libvirt_host_networks[1].bridge_device |length == 0
+    - libvirt_host_networks[1].mode == 'bridge'
+
 - name: delete any previous failed attempts to configure bridge interface
   file:
-    path: /etc/sysconfig/network-scripts/ifcfg-
+    path: /etc/sysconfig/network-scripts/ifcfg-{{ libvirt_host_networks[1].bridge_device }}
     state: absent
+  with_libvirt_host_networks[1]s: "{{ libvirt_host_networks[1] }}"
+  when: libvirt_host_networks[1].mode == 'bridge'
 
 - name: setup bridge interface
   template:
     src: ifcfg_bridge_template.j2
-    dest: /etc/sysconfig/network-scripts/ifcfg-{{ item.bridge_device }}
+    dest: /etc/sysconfig/network-scripts/ifcfg-{{ libvirt_host_networks[1].bridge_device }}
     mode: 0640
-  with_items: "{{ libvirt_host_networks }}"
-  when: item.mode == 'bridge'
-  register: bridge_device
+  with_libvirt_host_networks[1]s: "{{ libvirt_host_networks[1] }}"
+  when: libvirt_host_networks[1].mode == 'bridge'
+  register: create_bridge_device
   become: True
+
+- fail: msg="Bailing out. this play requires libvirt_host_networks[1].bridge_slave_dev"
+  with_libvirt_host_networks[1]s: "{{ libvirt_host_networks[1] }}"
+  when:
+    - libvirt_host_networks[1].bridge_slave_dev |length == 0
+    - libvirt_host_networks[1].mode == 'bridge'
 
 - name: setup ethernet device interface
   template:
     src: ifcfg_device_template.j2
-    dest: /etc/sysconfig/network-scripts/ifcfg-{{ item.bridge_slave_dev }}
+    dest: /etc/sysconfig/network-scripts/ifcfg-{{ libvirt_host_networks[1].bridge_slave_dev }}
     mode: 0640
-  with_items: "{{ libvirt_host_networks }}"
+  with_libvirt_host_networks[1]s: "{{ libvirt_host_networks[1] }}"
   become: True
-  register: slave_device
-  when: item.mode == 'bridge'
+  register: create_slave_device
+  when: libvirt_host_networks[1].mode == 'bridge'
 
 # Using the systemd module to restart networking seems to not properly panos_restart
 # the networking subsystem, further debugging is required to find root issue.
@@ -37,10 +55,10 @@
     - network
     - NetworkManager
     - libvirtd
-  when: bridge_device.changed or slave_device.changed
+  when: create_bridge_device.changed or create_slave_device.changed
 
 - name: update /etc/resolv.conf
   template:
     src: resolv.conf.j2
     dest: /etc/resolv.conf
-  when: bridge_device.changed or slave_device.changed
+  when: create_bridge_device.changed or create_slave_device.changed

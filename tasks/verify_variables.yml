@@ -1,0 +1,93 @@
+---
+- fail: msg="Bailing out. this play requires 'kvm_host_ip' KVM host ip"
+  when: kvm_host_ip |length == 0
+
+- fail: msg="Bailing out. this play requires 'kvm_host_interface' KVM host interface"
+  when: kvm_host_interface |length == 0
+
+- fail: msg="Bailing out. this play requires 'kvm_host_mask_prefix' KVM subnet mask prefix"
+  when: kvm_host_mask_prefix is undefined
+
+- fail: msg="Bailing out. this play requires 'kvm_host_gw' KVM host kvm host gateway"
+  when: kvm_host_gw |length == 0
+
+- fail: msg="Bailing out. this play requires 'ssh_username' ssh username"
+  when: ssh_username |length == 0
+
+- fail: msg="Bailing out. this play requires 'kvm_host_domain' kvm host domain"
+  when: kvm_host_domain |length == 0
+
+- fail: msg="Bailing out. this play requires 'kvm_host_dns_server' kvm host dns server"
+  when: kvm_host_dns_server |length == 0
+
+- fail: msg="Bailing out. this play requires 'kvm_host_bootproto' KVM host bootproto"
+  when: kvm_host_bootproto |length == 0
+
+- fail: msg="Bailing out. this play requires 'kvm_bridge_type' KVM  bridge type"
+  when: kvm_bridge_type |length == 0
+
+- fail: msg="Bailing out. this play requires 'qubinode_bridge_name' qubinode bridge name"
+  when: qubinode_bridge_name |length == 0
+
+- fail: msg="Bailing out. this play requires 'libvirt_host_networks[0].mac_start' MAC start not found for nat network"
+  when: libvirt_host_networks[0].mac_start |length == 0
+
+- fail: msg="Bailing out. this play requires 'libvirt_host_networks[1].mac' MAC not found for Bridge network"
+  when: libvirt_host_networks[1].mac |length == 0
+
+- fail: msg="Bailing out. this play requires 'libvirt_host_networks[0].name' Name not found for nat network"
+  when: libvirt_host_networks[0].name |length == 0
+
+- fail: msg="Bailing out. this play requires 'libvirt_host_networks[1].name' Name not found for Bridge network"
+  when: libvirt_host_networks[1].name |length == 0
+
+- fail: msg="Bailing out. this play requires 'libvirt_host_networks[0].create' create bool not found for nat network"
+  when: libvirt_host_networks[0].create is undefined
+
+- fail: msg="Bailing out. this play requires 'libvirt_host_networks[1].create' create bool not  found for Bridge network"
+  when: libvirt_host_networks[1].create is undefined
+
+- fail: msg="Bailing out. this play requires 'libvirt_host_networks[0].mode' mode not found for nat network"
+  when: libvirt_host_networks[0].mode |length == 0
+
+- fail: msg="Bailing out. this play requires 'libvirt_host_networks[1].mode' mode not found for Bridge network"
+  when: libvirt_host_networks[1].mode |length == 0
+
+- fail: msg="Bailing out. this play requires 'libvirt_host_networks[0].int_domain' Internal Domain not found for NAT network"
+  when: libvirt_host_networks[0].int_domain |length == 0
+
+- fail: msg="Bailing out. this play requires 'libvirt_host_networks[1].bridge_device' bridge device not found for Bridge network"
+  when: libvirt_host_networks[1].bridge_device |length == 0
+
+- fail: msg="Bailing out. this play requires 'libvirt_host_networks[0].external_domain' External Domain not found for NAT network"
+  when: libvirt_host_networks[0].external_domain |length == 0
+
+- fail: msg="Bailing out. this play requires 'libvirt_host_networks[1].ifcfg_type'  ifcfg_type not found for Bridge network"
+  when: libvirt_host_networks[1].ifcfg_type |length == 0
+
+- fail: msg="Bailing out. this play requires 'libvirt_host_networks[0].master_count' Master count not found for NAT network"
+  when: libvirt_host_networks[0].master_count is undefined
+
+- fail: msg="Bailing out. this play requires 'libvirt_host_networks[0].compute_count' Computer Count not found for NAT network"
+  when: libvirt_host_networks[0].compute_count is undefined
+
+- fail: msg="Bailing out. this play requires 'libvirt_host_networks[0].subnet' subnet not found for NAT network"
+  when: libvirt_host_networks[0].subnet |length == 0
+
+- fail: msg="Bailing out. this play requires 'libvirt_host_networks[0].mask' subnet mask not found for NAT network"
+  when: libvirt_host_networks[0].mask |length == 0
+
+- fail: msg="Bailing out. this play requires 'libvirt_host_networks[1].ifcfg_bootproto' ifcfg_bootproto not found for Bridge network"
+  when: libvirt_host_networks[1].ifcfg_bootproto |length == 0
+
+- fail: msg="Bailing out. this play requires 'libvirt_host_networks[1].bridge_slave_dev' bridge_slave_dev not found for Bridge network"
+  when: libvirt_host_networks[1].bridge_slave_dev |length == 0
+
+- fail: msg="Bailing out. this play requires 'libvirt_host_networks[1].gateway' gateway not found for Bridge network"
+  when: libvirt_host_networks[1].gateway |length == 0
+
+- fail: msg="Bailing out. this play requires 'libvirt_host_networks[1].mask_prefix' mask_prefix not found for Bridge network"
+  when: libvirt_host_networks[1].mask_prefix  is undefined
+
+- fail: msg="Bailing out. this play requires 'libvirt_host_networks[1].ipaddress' ipaddress not found for Bridge network"
+  when: libvirt_host_networks[1].ipaddress |length == 0

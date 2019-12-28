@@ -1,4 +1,11 @@
 ---
+- name: Display all variables/facts known for a host
+  debug:
+    var: libvirt_host_networks
+
+
+- name: validate variables are defined
+  include_tasks: verify_variables.yml
 
 - name: validate virtualization extensions are available to this host
   include_tasks: validate.yml
@@ -15,7 +22,6 @@
   register: pkg_installed
   changed_when: pkg_installed.stdout == 'yes'
 
-
 - name: enable libvirt services
   service:
     name: "{{ item }}"
@@ -31,10 +37,10 @@
 - name: configure bridge interface for libvirt
   include_tasks: bridge_interface.yml
   when: configure_bridge
-  
+
 - name: configure libvirt network
   include_tasks: networks.yml
-  
+
 - name: configure libvirt storage pool
   include_tasks: storage_pool.yml
 
