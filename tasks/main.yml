@@ -15,7 +15,6 @@
   register: pkg_installed
   changed_when: pkg_installed.stdout == 'yes'
 
-
 - name: enable libvirt services
   service:
     name: "{{ item }}"
