@@ -1,6 +1,8 @@
-DEVICE={{ kvm_host_interface }}
+DEVICE={{ libvirt_host_networks[1].bridge_slave_dev }}
+NAME={{ libvirt_host_networks[1].bridge_device }}_slave
 TYPE=Ethernet
-HWADDR={{ kvm_host_macaddr }}
+HWADDR={{ libvirt_host_networks[1].mac }}
+BOOTPROTO=none
 ONBOOT=yes
-BRIDGE={{ item.bridge }}
+BRIDGE={{ libvirt_host_networks[1].bridge_device }}
 ZONE=public

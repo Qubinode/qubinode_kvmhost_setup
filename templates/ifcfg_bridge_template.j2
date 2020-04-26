@@ -1,6 +1,14 @@
-DEVICE={{ item.bridge }}
-TYPE={{ kvm_bridge_type }}
+DEVICE={{ libvirt_host_networks[1].bridge_device }}
+NAME={{ libvirt_host_networks[1].bridge_device }}
+TYPE={{ libvirt_host_networks[1].ifcfg_type }}
 ONBOOT=yes
-BOOTPROTO={{ kvm_host_bootproto }}
+{% if libvirt_host_networks[1].ifcfg_bootproto == "dhcp" %}
+BOOTPROTO={{ libvirt_host_networks[1].ifcfg_bootproto }}
+{% elif libvirt_host_networks[1].ifcfg_bootproto == "none" %}
+BOOTPROTO=static
+IPADDR={{ libvirt_host_networks[1].ipaddress }}
+GATEWAY={{ libvirt_host_networks[1].gateway }}
+PREFIX={{ libvirt_host_networks[1].mask_prefix }}
+{% endif %}
 ZONE=public
 DELAY=0

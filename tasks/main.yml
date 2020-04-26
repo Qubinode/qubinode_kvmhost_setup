@@ -1,13 +1,26 @@
 ---
+- name: Display all variables/facts known for a host
+  debug:
+    var: libvirt_host_networks
 
-- name: validate virtuaization extentions are available to this host
+
+- name: validate variables are defined
+  include_tasks: verify_variables.yml
+
+- name: validate virtualization extensions are available to this host
   include_tasks: validate.yml
 
+- name: configure shell extras
+  include_tasks: configure_shell.yml
+
 - name: ensure libvirt packages are installed
-  yum:
-    name: "{{ libvirt_pkgs }}"
-    state: present
-    update_cache : yes
+  shell: >
+    rpm -q "{{ item }}" || yum install -y "{{ item }}" && echo yes
+  args:
+    warn: false
+  loop: "{{ libvirt_pkgs }}"
+  register: pkg_installed
+  changed_when: pkg_installed.stdout == 'yes'
 
 - name: enable libvirt services
   service:
@@ -21,8 +34,15 @@
   register: start_tuned
   changed_when: start_tuned.rc != 0
 
+- name: configure bridge interface for libvirt
+  include_tasks: bridge_interface.yml
+  when: configure_bridge
+
 - name: configure libvirt network
   include_tasks: networks.yml
 
-- name: Flush handlers
-  meta: flush_handlers
+- name: configure libvirt storage pool
+  include_tasks: storage_pool.yml
+
+#- name: Flush handlers
+#  meta: flush_handlers
