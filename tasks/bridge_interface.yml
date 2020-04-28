@@ -55,7 +55,33 @@
     - network
     - NetworkManager
     - libvirtd
-  when: create_bridge_device.changed or create_slave_device.changed
+  when: (create_bridge_device.changed or create_slave_device.changed and ansible_distribution == "RedHat" and ansible_distribution_major_version == '7')
+
+- name: restart network service
+  command: "systemctl restart {{ item }}"
+  args:
+    warn: no
+  changed_when: false
+  with_items:
+    - NetworkManager
+    - libvirtd
+  when: (create_bridge_device.changed or create_slave_device.changed and ansible_distribution == "RedHat" and ansible_distribution_major_version == '8')
+
+- name: active bridge connection
+  command: "nmcli connection up {{ libvirt_host_networks[1].bridge_device }}"
+  args:
+    warn: no
+  changed_when: false
+  with_items: "{{ libvirt_host_networks[1] }}"
+  when: (create_bridge_device.changed or create_slave_device.changed and ansible_distribution == "RedHat" and ansible_distribution_major_version == '8')
+
+- name: restart network service
+  command: "sudo nmcli connection down {{ libvirt_host_networks[1].bridge_slave_dev }}"
+  args:
+    warn: no
+  changed_when: false
+  with_items: "{{ libvirt_host_networks[1] }}"
+  when: (create_bridge_device.changed or create_slave_device.changed and ansible_distribution == "RedHat" and ansible_distribution_major_version == '8')
 
 - name: update /etc/resolv.conf
   template:
