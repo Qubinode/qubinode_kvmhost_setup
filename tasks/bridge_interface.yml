@@ -4,7 +4,7 @@
     var: libvirt_host_networks[1]
 
 - fail: msg="Bailing out. this play requires libvirt_host_networks[1].bridge_device"
-  with_libvirt_host_networks[1]s: "{{ libvirt_host_networks[1] }}"
+  with_items: "{{ libvirt_host_networks[1] }}"
   when:
     - libvirt_host_networks[1].bridge_device |length == 0
     - libvirt_host_networks[1].mode == 'bridge'
@@ -13,7 +13,7 @@
   file:
     path: /etc/sysconfig/network-scripts/ifcfg-{{ libvirt_host_networks[1].bridge_device }}
     state: absent
-  with_libvirt_host_networks[1]s: "{{ libvirt_host_networks[1] }}"
+  with_items: "{{ libvirt_host_networks[1] }}"
   when: libvirt_host_networks[1].mode == 'bridge'
 
 - name: setup bridge interface
@@ -21,13 +21,13 @@
     src: ifcfg_bridge_template.j2
     dest: /etc/sysconfig/network-scripts/ifcfg-{{ libvirt_host_networks[1].bridge_device }}
     mode: 0640
-  with_libvirt_host_networks[1]s: "{{ libvirt_host_networks[1] }}"
+  with_items: "{{ libvirt_host_networks[1] }}"
   when: libvirt_host_networks[1].mode == 'bridge'
   register: create_bridge_device
   become: True
 
 - fail: msg="Bailing out. this play requires libvirt_host_networks[1].bridge_slave_dev"
-  with_libvirt_host_networks[1]s: "{{ libvirt_host_networks[1] }}"
+  with_items: "{{ libvirt_host_networks[1] }}"
   when:
     - libvirt_host_networks[1].bridge_slave_dev |length == 0
     - libvirt_host_networks[1].mode == 'bridge'
@@ -37,7 +37,7 @@
     src: ifcfg_device_template.j2
     dest: /etc/sysconfig/network-scripts/ifcfg-{{ libvirt_host_networks[1].bridge_slave_dev }}
     mode: 0640
-  with_libvirt_host_networks[1]s: "{{ libvirt_host_networks[1] }}"
+  with_items: "{{ libvirt_host_networks[1] }}"
   become: True
   register: create_slave_device
   when: libvirt_host_networks[1].mode == 'bridge'
@@ -55,7 +55,32 @@
     - network
     - NetworkManager
     - libvirtd
-  when: create_bridge_device.changed or create_slave_device.changed
+  when: ((create_bridge_device.changed or create_slave_device.changed and ansible_distribution) == ("RedHat" and ansible_distribution_major_version == '7'))
+
+- name: restart network service
+  command: "systemctl restart {{ item }}"
+  args:
+    warn: no
+  changed_when: false
+  with_items:
+    - NetworkManager
+    - libvirtd
+  when: ((create_bridge_device.changed or create_slave_device.changed and ansible_distribution) == ("RedHat" and ansible_distribution_major_version == '8'))
+
+- name: active bridge connection
+  command: "nmcli connection up {{ libvirt_host_networks[1].bridge_device }}"
+  args:
+    warn: no
+  changed_when: false
+  when: ((create_bridge_device.changed or create_slave_device.changed and ansible_distribution) == ("RedHat" and ansible_distribution_major_version == '8'))
+
+- name: diable old connection
+  command: "sudo nmcli connection down {{ libvirt_host_networks[1].bridge_slave_dev }}"
+  args:
+    warn: no
+  changed_when: false
+  when: ((create_bridge_device.changed or create_slave_device.changed and ansible_distribution) == ("RedHat" and ansible_distribution_major_version == '8'))
+  ignore_errors: yes
 
 - name: update /etc/resolv.conf
   template:
