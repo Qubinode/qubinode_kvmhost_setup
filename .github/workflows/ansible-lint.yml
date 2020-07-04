@@ -27,5 +27,5 @@ jobs:
       run: |
         git clone https://github.com/Qubinode/qubinode-installer.git
         cd qubinode-installer
-        ansible-galaxy install https://github.com/Qubinode/qubinode_kvmhost_setup.git,dev
+        ansible-galaxy install git+https://github.com/Qubinode/qubinode_kvmhost_setup.git,dev --force
         ansible-lint -x 206,204 playbooks/setup_kvmhost.yml
