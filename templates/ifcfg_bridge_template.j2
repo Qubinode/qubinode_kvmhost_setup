@@ -1,14 +1,14 @@
-DEVICE={{ libvirt_host_networks[1].bridge_device }}
-NAME={{ libvirt_host_networks[1].bridge_device }}
-TYPE={{ libvirt_host_networks[1].ifcfg_type }}
+DEVICE={{ libvirt_host_networks[bridge_idx].bridge_device }}
+NAME={{ libvirt_host_networks[bridge_idx].bridge_device }}
+TYPE={{ libvirt_host_networks[bridge_idx].ifcfg_type }}
 ONBOOT=yes
-{% if libvirt_host_networks[1].ifcfg_bootproto == "dhcp" %}
-BOOTPROTO={{ libvirt_host_networks[1].ifcfg_bootproto }}
-{% elif libvirt_host_networks[1].ifcfg_bootproto == "none" %}
+{% if libvirt_host_networks[bridge_idx].ifcfg_bootproto == "dhcp" %}
+BOOTPROTO={{ libvirt_host_networks[bridge_idx].ifcfg_bootproto }}
+{% elif libvirt_host_networks[bridge_idx].ifcfg_bootproto == "none" %}
 BOOTPROTO=static
-IPADDR={{ libvirt_host_networks[1].ipaddress }}
-GATEWAY={{ libvirt_host_networks[1].gateway }}
-PREFIX={{ libvirt_host_networks[1].mask_prefix }}
+IPADDR={{ libvirt_host_networks[bridge_idx].ipaddress }}
+GATEWAY={{ libvirt_host_networks[bridge_idx].gateway }}
+PREFIX={{ libvirt_host_networks[bridge_idx].mask_prefix }}
 {% endif %}
 ZONE=public
 DELAY=0

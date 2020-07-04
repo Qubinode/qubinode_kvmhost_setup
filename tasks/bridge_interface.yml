@@ -1,46 +1,46 @@
 ---
-- name: Display all variables/facts known for a host
-  debug:
-    var: libvirt_host_networks[1]
-
-- fail: msg="Bailing out. this play requires libvirt_host_networks[1].bridge_device"
-  with_items: "{{ libvirt_host_networks[1] }}"
+- fail: msg="Bailing out. this play requires libvirt_host_networks[type_idx].bridge_device"
+  with_items: "{{ libvirt_host_networks[type_idx] }}"
   when:
-    - libvirt_host_networks[1].bridge_device |length == 0
-    - libvirt_host_networks[1].mode == 'bridge'
+    - libvirt_host_networks[type_idx].bridge_device |length == 0
+    - libvirt_host_networks[type_idx].mode == 'bridge'
 
 - name: delete any previous failed attempts to configure bridge interface
   file:
-    path: /etc/sysconfig/network-scripts/ifcfg-{{ libvirt_host_networks[1].bridge_device }}
+    path: /etc/sysconfig/network-scripts/ifcfg-{{ libvirt_host_networks[type_idx].bridge_device }}
     state: absent
-  with_items: "{{ libvirt_host_networks[1] }}"
-  when: libvirt_host_networks[1].mode == 'bridge'
+  with_items: "{{ libvirt_host_networks[type_idx] }}"
+  when: libvirt_host_networks[type_idx].mode == 'bridge'
 
 - name: setup bridge interface
+  vars:
+    bridge_idx: "{{ type_idx }}"
   template:
     src: ifcfg_bridge_template.j2
-    dest: /etc/sysconfig/network-scripts/ifcfg-{{ libvirt_host_networks[1].bridge_device }}
+    dest: /etc/sysconfig/network-scripts/ifcfg-{{ libvirt_host_networks[type_idx].bridge_device }}
     mode: 0640
-  with_items: "{{ libvirt_host_networks[1] }}"
-  when: libvirt_host_networks[1].mode == 'bridge'
+  with_items: "{{ libvirt_host_networks[type_idx] }}"
+  when: libvirt_host_networks[type_idx].mode == 'bridge'
   register: create_bridge_device
   become: True
 
-- fail: msg="Bailing out. this play requires libvirt_host_networks[1].bridge_slave_dev"
-  with_items: "{{ libvirt_host_networks[1] }}"
+- fail: msg="Bailing out. this play requires libvirt_host_networks[type_idx].bridge_slave_dev"
+  with_items: "{{ libvirt_host_networks[type_idx] }}"
   when:
-    - libvirt_host_networks[1].bridge_slave_dev |length == 0
-    - libvirt_host_networks[1].mode == 'bridge'
+    - libvirt_host_networks[type_idx].bridge_slave_dev |length == 0
+    - libvirt_host_networks[type_idx].mode == 'bridge'
 
 - name: setup ethernet device interface
+  vars:
+    bridge_idx: "{{ type_idx }}"
   template:
     src: ifcfg_device_template.j2
-    dest: /etc/sysconfig/network-scripts/ifcfg-{{ libvirt_host_networks[1].bridge_slave_dev }}
+    dest: /etc/sysconfig/network-scripts/ifcfg-{{ libvirt_host_networks[type_idx].bridge_slave_dev }}
     mode: 0640
-  with_items: "{{ libvirt_host_networks[1] }}"
+  with_items: "{{ libvirt_host_networks[type_idx] }}"
   become: True
   register: create_slave_device
-  when: libvirt_host_networks[1].mode == 'bridge'
+  when: libvirt_host_networks[type_idx].mode == 'bridge'
 
 # Using the systemd module to restart networking seems to not properly panos_restart
 # the networking subsystem, further debugging is required to find root issue.
@@ -68,14 +68,14 @@
   when: ((create_bridge_device.changed or create_slave_device.changed and ansible_distribution) == ("RedHat" and ansible_distribution_major_version == '8'))
 
 - name: active bridge connection
-  command: "nmcli connection up {{ libvirt_host_networks[1].bridge_device }}"
+  command: "nmcli connection up {{ libvirt_host_networks[type_idx].bridge_device }}"
   args:
     warn: no
   changed_when: false
   when: ((create_bridge_device.changed or create_slave_device.changed and ansible_distribution) == ("RedHat" and ansible_distribution_major_version == '8'))
 
 - name: diable old connection
-  command: "sudo nmcli connection down {{ libvirt_host_networks[1].bridge_slave_dev }}"
+  command: "sudo nmcli connection down {{ libvirt_host_networks[type_idx].bridge_slave_dev }}"
   args:
     warn: no
   changed_when: false
@@ -87,3 +87,17 @@
     src: resolv.conf.j2
     dest: /etc/resolv.conf
   when: create_bridge_device.changed or create_slave_device.changed
+
+- name: Ensure libvirt bridge network is defined
+  vars:
+    net_name: "{{ libvirt_host_networks[type_idx].name }}"
+    net_mode: "{{ libvirt_host_networks[type_idx].mode }}"
+    net_bridge_device: "{{ libvirt_host_networks[type_idx].bridge_device }}"
+    net_create: "{{ libvirt_host_networks[type_idx].create }}"
+  virt_net:
+    name: "{{ net_name }}"
+    command: define
+    xml: '{{ (lookup("template", "br_network.xml.j2")) }}'
+  when: net_create|bool
+  become: True
+

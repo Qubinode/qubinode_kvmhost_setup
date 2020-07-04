@@ -1,5 +1,5 @@
 <network connections='1'>
-  <name>{{ libvirt_host_networks[1].name }}</name>
-  <forward mode='{{ libvirt_host_networks[1].mode }}'/>
-  <bridge name='{{ libvirt_host_networks[1].bridge_device }}'/>
+  <name>{{ net_name }}</name>
+  <forward mode='{{ net_mode }}'/>
+  <bridge name='{{ net_bridge_device }}'/>
 </network>

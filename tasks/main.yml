@@ -2,7 +2,7 @@
 - name: Display all variables/facts known for a host
   debug:
     var: libvirt_host_networks
-
+  register: myresults
 
 - name: validate variables are defined
   include_tasks: verify_variables.yml
@@ -36,9 +36,18 @@
 
 - name: configure bridge interface for libvirt
   include_tasks: bridge_interface.yml
-  when: configure_bridge
+  #when: configure_bridge
+  loop: "{{ libvirt_host_networks }}"
+  loop_control:
+    index_var: type_idx
+    loop_var: bridge_item
+  when: bridge_item.mode == 'bridge'
 
 - name: configure libvirt network
+  loop: "{{ libvirt_host_networks }}"
+  loop_control:
+    index_var: libvirt_idx
+    loop_var: libvirt_item
   include_tasks: networks.yml
 
 - name: configure libvirt storage pool

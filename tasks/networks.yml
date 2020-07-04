@@ -1,32 +1,30 @@
 ---
-- name: Ensure libvirt bridge network is defined
+- name: get list of libvirt networks
   virt_net:
-    name: "{{ item.name }}"
-    command: define
-    xml: '{{ (lookup("template", "br_network.xml.j2")) }}'
-  with_items: "{{ libvirt_host_networks }}"
-  when: item.mode == 'bridge' and item.create|bool
-  become: True
+    command: list_nets
+  register: libvirt_nets
+  become: yes
 
-#- name: Ensure libvirt nat network is defined
-#  virt_net:
-#    name: "{{ item.name }}"
-#    command: define
-#    xml: '{{ (lookup("template", "nat_network.xml.j2")) }}'
-#  with_items: "{{ libvirt_host_networks }}"
-#  when: item.mode == 'nat' and item.create|bool
-#  become: True
+- name: ensure libvirt networks are setup
+  vars:
+    net_name: "{{ libvirt_host_networks[libvirt_idx].name }}"
+    net_mode: "{{ libvirt_host_networks[libvirt_idx].mode }}"
+    net_create: "{{ libvirt_host_networks[libvirt_idx].create }}"
+  when: net_name in libvirt_nets.list_nets
+  become: yes
+  block:
+    - name: Ensure libvirt nat network {{ net_name }} is defined
+      virt_net:
+        name: "{{ net_name }}"
+        command: define
+        xml: '{{ (lookup("template", "nat_network.xml.j2")) }}'
+      when: net_mode == 'nat' and net_create|bool
+    - name: ensure {{ net_name }} is active
+      virt_net:
+        name: "{{ net_name }}"
+        state: active
 
-- name: Ensure libvirt networks are active
-  virt_net:
-    name: "{{ item.name }}"
-    state: active
-  with_items: "{{ libvirt_host_networks }}"
-  become: True
-
-- name: Ensure libvirt networks are started on boot
-  virt_net:
-    name: "{{ item.name }}"
-    autostart: yes
-  with_items: "{{ libvirt_host_networks }}"
-  become: True
+    - name: ensure {{ net_name }} is started on boot
+      virt_net:
+        name: "{{ net_name }}"
+        autostart: yes
