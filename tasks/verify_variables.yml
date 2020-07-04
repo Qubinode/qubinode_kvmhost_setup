@@ -65,8 +65,8 @@
 - fail: msg="Bailing out. this play requires 'libvirt_host_networks[1].ifcfg_type'  ifcfg_type not found for Bridge network"
   when: libvirt_host_networks[1].ifcfg_type |length == 0
 
-- fail: msg="Bailing out. this play requires 'libvirt_host_networks[0].master_count' Master count not found for NAT network"
-  when: libvirt_host_networks[0].master_count is undefined
+- fail: msg="Bailing out. this play requires 'libvirt_host_networks[0].ctrlplane_count' Master count not found for NAT network"
+  when: libvirt_host_networks[0].ctrlplane_count is undefined
 
 - fail: msg="Bailing out. this play requires 'libvirt_host_networks[0].compute_count' Computer Count not found for NAT network"
   when: libvirt_host_networks[0].compute_count is undefined

@@ -53,7 +53,7 @@ libvirt_host_networks:
     int_domain: compute.local
     external_domain: "{{ public_domain }}"
     mac_start: "52:54:00:"
-    master_count: 3
+    ctrlplane_count: 3
     compute_count: 3
     xml_file: "nat_network.xml.j2"
   - name: "{{ vm_libvirt_net }}"

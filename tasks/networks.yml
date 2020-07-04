@@ -8,14 +8,14 @@
   when: item.mode == 'bridge' and item.create|bool
   become: True
 
-- name: Ensure libvirt nat network is defined
-  virt_net:
-    name: "{{ item.name }}"
-    command: define
-    xml: '{{ (lookup("template", "nat_network.xml.j2")) }}'
-  with_items: "{{ libvirt_host_networks }}"
-  when: item.mode == 'nat' and item.create|bool
-  become: True
+#- name: Ensure libvirt nat network is defined
+#  virt_net:
+#    name: "{{ item.name }}"
+#    command: define
+#    xml: '{{ (lookup("template", "nat_network.xml.j2")) }}'
+#  with_items: "{{ libvirt_host_networks }}"
+#  when: item.mode == 'nat' and item.create|bool
+#  become: True
 
 - name: Ensure libvirt networks are active
   virt_net:

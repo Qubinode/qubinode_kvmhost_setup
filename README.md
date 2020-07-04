@@ -1,3 +1,5 @@
+![Ansible Lint](https://github.com/Qubinode/qubinode_kvmhost_setup/workflows/Ansible%20Lint/badge.svg?branch=dev)
+
 Role Name
 =========
 swygue.edge_host_setup
