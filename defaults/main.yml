@@ -92,3 +92,9 @@ libvirt_host_storage_pools:
 
 # set to false to skip creating a bridge interface
 configure_bridge: true
+
+# Configure the user bash shell login prompt
+configure_shell: yes
+
+# packages for cockpit
+cockpit_packages: "cockpit cockpit-dashboard cockpit-storaged cockpit-packagekit cockpit-machines cockpit-bridge subscription-manager-cockpit cockpit-ws"

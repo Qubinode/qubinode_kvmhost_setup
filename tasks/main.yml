@@ -12,6 +12,7 @@
 
 - name: configure shell extras
   include_tasks: configure_shell.yml
+  when: configure_shell|bool
 
 - name: ensure libvirt packages are installed
   shell: >
@@ -52,6 +53,24 @@
 
 - name: configure libvirt storage pool
   include_tasks: storage_pool.yml
+
+- name: install cockpit
+  package:
+    name: "{{ cockpit_packages }}"
+    state: present
+  ignore_errors: yes
+
+- name: enable cockpit service
+  service:
+    name: cockpit
+    enabled: yes
+    state: started
+
+- name: enable firewall ports for cockpit
+  firewalld:
+    service: cockpit
+    permanent: yes
+    state: enabled
 
 #- name: Flush handlers
 #  meta: flush_handlers
