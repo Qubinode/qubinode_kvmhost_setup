@@ -31,9 +31,12 @@
   with_items: "{{ libvirt_services }}"
 
 - name: start tuned profile virtual-host
-  shell: tuned-adm profile virtual-host
+  shell: |
+   set -o pipefail &&  tuned-adm profile virtual-host
   register: start_tuned
   changed_when: start_tuned.rc != 0
+  args:
+    executable: /bin/bash
 
 - name: configure bridge interface for libvirt
   include_tasks: bridge_interface.yml

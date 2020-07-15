@@ -1,32 +1,42 @@
 ---
-- fail: msg="Bailing out. this play requires 'kvm_host_ip' KVM host ip"
+- name: Testing 'kvm_host_ip' KVM host ip
+  fail: msg="Bailing out. this play requires 'kvm_host_ip' KVM host ip"
   when: kvm_host_ip |length == 0
 
-- fail: msg="Bailing out. this play requires 'kvm_host_interface' KVM host interface"
+- name: Testing 'kvm_host_interface' KVM host interface
+  fail: msg="Bailing out. this play requires 'kvm_host_interface' KVM host interface"
   when: kvm_host_interface |length == 0
 
-- fail: msg="Bailing out. this play requires 'kvm_host_mask_prefix' KVM subnet mask prefix"
+- name: Testing 'kvm_host_mask_prefix' KVM subnet mask prefix"
+  fail: msg="Bailing out. this play requires 'kvm_host_mask_prefix' KVM subnet mask prefix"
   when: kvm_host_mask_prefix is undefined
 
-- fail: msg="Bailing out. this play requires 'kvm_host_gw' KVM host kvm host gateway"
+- name: Testing 'kvm_host_gw' KVM host kvm host gateway"
+  fail: msg="Bailing out. this play requires 'kvm_host_gw' KVM host kvm host gateway"
   when: kvm_host_gw |length == 0
 
-- fail: msg="Bailing out. this play requires 'ssh_username' ssh username"
+- name: Testing 'ssh_username' ssh username"
+  fail: msg="Bailing out. this play requires 'ssh_username' ssh username"
   when: ssh_username |length == 0
 
-- fail: msg="Bailing out. this play requires 'kvm_host_domain' kvm host domain"
+- name: Testing 'kvm_host_domain' kvm host domain
+  fail: msg="Bailing out. this play requires 'kvm_host_domain' kvm host domain"
   when: kvm_host_domain |length == 0
 
-- fail: msg="Bailing out. this play requires 'kvm_host_dns_server' kvm host dns server"
+- name: Testing 'kvm_host_dns_server' kvm host dns server
+  fail: msg="Bailing out. this play requires 'kvm_host_dns_server' kvm host dns server"
   when: kvm_host_dns_server |length == 0
 
-- fail: msg="Bailing out. this play requires 'kvm_host_bootproto' KVM host bootproto"
+- name: Testing 'kvm_host_bootproto' KVM host bootproto
+  fail: msg="Bailing out. this play requires 'kvm_host_bootproto' KVM host bootproto"
   when: kvm_host_bootproto |length == 0
 
-- fail: msg="Bailing out. this play requires 'kvm_bridge_type' KVM  bridge type"
+- name: Testing 'kvm_bridge_type' KVM  bridge type
+  fail: msg="Bailing out. this play requires 'kvm_bridge_type' KVM  bridge type"
   when: kvm_bridge_type |length == 0
 
-- fail: msg="Bailing out. this play requires 'qubinode_bridge_name' qubinode bridge name"
+- name: Testing 'qubinode_bridge_name' qubinode bridge name
+  fail: msg="Bailing out. this play requires 'qubinode_bridge_name' qubinode bridge name"
   when: qubinode_bridge_name |length == 0
 
 - name: get the index of a dicta

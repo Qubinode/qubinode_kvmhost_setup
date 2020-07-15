@@ -1,5 +1,6 @@
 ---
-- fail: msg="Bailing out. this play requires libvirt_host_networks[type_idx].bridge_device"
+- name: Checking libvirt_host_networks[type_idx].bridge_device variable
+  fail: msg="Bailing out. this play requires libvirt_host_networks[type_idx].bridge_device"
   with_items: "{{ libvirt_host_networks[type_idx] }}"
   when:
     - libvirt_host_networks[type_idx].bridge_device |length == 0
@@ -24,7 +25,8 @@
   register: create_bridge_device
   become: True
 
-- fail: msg="Bailing out. this play requires libvirt_host_networks[type_idx].bridge_slave_dev"
+- name: Check _networks[type_idx].bridge_slave_dev variable
+  fail: msg="Bailing out. this play requires libvirt_host_networks[type_idx].bridge_slave_dev"
   with_items: "{{ libvirt_host_networks[type_idx] }}"
   when:
     - libvirt_host_networks[type_idx].bridge_slave_dev |length == 0
