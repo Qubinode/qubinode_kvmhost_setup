@@ -1,13 +1,13 @@
 ![Ansible Lint](https://github.com/Qubinode/qubinode_kvmhost_setup/workflows/Ansible%20Lint/badge.svg?branch=dev)
 
-Role Name
+Qubinode kvmhost setup role 
 =========
-swygue.edge_host_setup
+KVM Host Setup for RHEL Qubinode servers
 
 Requirements
 ------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+Ansible 
 
 Role Variables
 --------------
@@ -53,4 +53,5 @@ BSD
 Author Information
 ------------------
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+* Rodrique Heron - [flyemsafe](https://github.com/flyemsafe)
+* Abnerson Malivert - [amalivert](https://github.com/amalivert)
