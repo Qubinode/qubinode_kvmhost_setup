@@ -25,7 +25,8 @@ jobs:
         pip install ansible-lint==${{ matrix.lint-version }} ansible==${{ matrix.ansible-version }}
     - name: Lint playbook
       run: |
-        git clone https://github.com/Qubinode/qubinode-installer.git
+        git clone https://github.com/tosin2013/qubinode-installer.git
         cd qubinode-installer
+        git checkout python-build
         ansible-galaxy install git+https://github.com/Qubinode/qubinode_kvmhost_setup.git,dev --force
-        ansible-lint -x 206,204 playbooks/setup_kvmhost.yml
+        ansible-lint -x 206,204 project/setup_kvmhost.yml
