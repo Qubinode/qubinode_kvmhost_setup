@@ -7,7 +7,7 @@ KVM Host Setup for RHEL Qubinode servers
 Requirements
 ------------
 
-Ansible 
+* Ansible 
 
 Role Variables
 --------------
