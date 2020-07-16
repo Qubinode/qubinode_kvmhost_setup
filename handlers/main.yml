@@ -1,1 +1,47 @@
 ---
+# Using the systemd module to restart networking seems to not properly panos_restart
+# the networking subsystem, further debugging is required to find root issue.
+# The command module gives us the behaviour we expect which is network restart without loosing
+# connectivity and the bridge interface comes up.
+- name: Activate and Restart Network
+  block:
+    - name: restart network service
+      command: "systemctl restart {{ item }}"
+      args:
+        warn: no
+      changed_when: false
+      with_items:
+        - network
+        - NetworkManager
+        - libvirtd
+      when: ("RedHat" and ansible_distribution_major_version == '7')
+
+    - name: restart network service
+      command: "systemctl restart {{ item }}"
+      args:
+        warn: no
+      changed_when: false
+      with_items:
+        - NetworkManager
+        - libvirtd
+      when: ("RedHat" and ansible_distribution_major_version == '8')
+
+    - name: active bridge connection
+      command: "nmcli connection up {{ libvirt_host_networks[type_idx].bridge_device }}"
+      args:
+        warn: no
+      changed_when: false
+      when: ("RedHat" and ansible_distribution_major_version == '8')
+
+    - name: diable old connection
+      command: "sudo nmcli connection down {{ libvirt_host_networks[type_idx].bridge_slave_dev }}"
+      args:
+        warn: no
+      changed_when: false
+      when: ("RedHat" and ansible_distribution_major_version == '8')
+      ignore_errors: yes
+
+    - name: update /etc/resolv.conf
+      template:
+        src: resolv.conf.j2
+        dest: /etc/resolv.conf

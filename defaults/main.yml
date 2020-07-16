@@ -45,7 +45,7 @@ libvirt_services:
 # The nat network is primarly for OCP4. Perhaps it will be use for other things in the furture.
 # If there are other types of networks you want to support, make sure
 # to create the associated libvirt network xml template
-
+qubinode_bridge_name: qubibr0 
 libvirt_host_networks:
   - name: "{{ cluster_name }}"
     create: true
@@ -72,6 +72,7 @@ kvm_bridge_type: 'Bridge'
 storage_nic: false
 libvirt_disk: false
 use_dns: idm # use idm or use libvirt
+
 
 kvm_host_ip: "{{ kvm_host_ipaddr }}"
 kvm_host_mask_prefix: "{{ kvm_host_netmask }}"
