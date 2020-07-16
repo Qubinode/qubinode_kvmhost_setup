@@ -41,7 +41,7 @@
 
 - name: get the index of a dicta
   debug:
-    msg: "{{ item.mac }}"
+    msg: "{{ item.mac_start }}"
   loop: "{{ libvirt_host_networks }}"
 
 
@@ -49,7 +49,7 @@
 - name: ensureing the libvirt_host_networks values are not empty if defined
   assert:
     that:
-      - item.mac |length != 0
+      - item.mac_start |length != 0
       - item.name |length != 0
       - item.create is defined
       - item.mode |length != 0

@@ -1,5 +1,4 @@
 ---
 - hosts: localhost
   remote_user: root
-  roles:
-    - storage
+    - include_tasks:  tasks/main.yml
