@@ -9,6 +9,7 @@
 
 - name: validate virtualization extensions are available to this host
   include_tasks: validate.yml
+  when: not cicd_test|bool
 
 - name: configure shell extras
   include_tasks: configure_shell.yml
@@ -45,7 +46,7 @@
   loop_control:
     index_var: type_idx
     loop_var: bridge_item
-  when: bridge_item.mode == 'bridge'
+  when: (bridge_item.mode == 'bridge' and  not cicd_test|bool)
 
 - name: configure libvirt network
   loop: "{{ libvirt_host_networks }}"
@@ -53,9 +54,11 @@
     index_var: libvirt_idx
     loop_var: libvirt_item
   include_tasks: networks.yml
+  when: not cicd_test|bool
 
 - name: configure libvirt storage pool
   include_tasks: storage_pool.yml
+  when: not cicd_test|bool
 
 - name: install cockpit
   package:
@@ -74,6 +77,6 @@
     service: cockpit
     permanent: yes
     state: enabled
-
+  when: not cicd_test|bool
 #- name: Flush handlers
 #  meta: flush_handlers

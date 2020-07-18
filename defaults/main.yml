@@ -38,6 +38,17 @@ libvirt_services:
   - libvirtd
   - tuned
 
+kvm_host_ipaddr: ""
+kvm_host_interface: ""
+kvm_host_gw: ""
+kvm_host_macaddr: ""
+kvm_host_netmask: ""
+kvm_host_mask_prefix: ""
+kvm_host_bootproto: 'dhcp'
+kvm_bridge_type: 'Bridge'
+storage_nic: false
+libvirt_disk: false
+
 # This hash defines all the libvirt networks that should be created
 # The example below defines a bridge and nat network.
 # The bridge network is needed for ocp3 installs, IdM and anything else that needs direct
@@ -46,8 +57,9 @@ libvirt_services:
 # If there are other types of networks you want to support, make sure
 # to create the associated libvirt network xml template
 qubinode_bridge_name: qubibr0 
+# name of the libvirt network to use
 libvirt_host_networks:
-  - name: "{{ vm_libvirt_net }}"
+  - name: "{{ vm_libvirt_net | default(qubinet) }}"
     create: true
     mode: bridge
     bridge_device: "{{ kvm_host_bridge_name | default(qubinode_bridge_name) }}"
@@ -61,20 +73,12 @@ libvirt_host_networks:
     subnet: "not currently in use"
     mac: "{{ kvm_host_macaddr }}"
 
-kvm_host_ipaddr: "{{ ansible_default_ipv4.address }}"
-kvm_host_interface: "{{ ansible_default_ipv4.interface }}"
-kvm_host_gw: "{{ ansible_default_ipv4.gateway }}"
-kvm_host_macaddr: "{{ ansible_default_ipv4.macaddress }}"
-kvm_host_netmask: "{{ ansible_default_ipv4.netmask }}"
-kvm_host_bootproto: 'dhcp'
-kvm_bridge_type: 'Bridge'
-storage_nic: false
-libvirt_disk: false
+
 use_dns: idm # use idm or use libvirt
 
 
 kvm_host_ip: "{{ kvm_host_ipaddr }}"
-kvm_host_mask_prefix: "{{ kvm_host_netmask }}"
+
 ssh_username: ""
 kvm_host_domain: "lab.example"
 kvm_host_dns_server: "1.1.1.1"
@@ -98,3 +102,6 @@ configure_shell: yes
 
 # packages for cockpit
 cockpit_packages: "cockpit cockpit-dashboard cockpit-storaged cockpit-packagekit cockpit-machines cockpit-bridge subscription-manager-cockpit cockpit-ws"
+
+# set to true to test in container
+cicd_test: false

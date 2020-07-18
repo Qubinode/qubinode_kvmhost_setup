@@ -1,3 +1,4 @@
+---
 galaxy_info:
   author: Rodrique Heron
   description: KVM Host Setup for RHEL Qubinode servers
@@ -18,14 +19,6 @@ galaxy_info:
 
   min_ansible_version: 2.8
 
-  # Optionally specify the branch Galaxy will use when accessing the GitHub
-  # repo for this role. During role install, if no tags are available,
-  # Galaxy will use this branch. During import Galaxy will access files on
-  # this branch. If travis integration is cofigured, only notification for this
-  # branch will be accepted. Otherwise, in all cases, the repo's default branch
-  # (usually master) will be used.
-  #github_branch:
-
   #
   # Below are all platforms currently available. Just uncomment
   # the ones that apply to your role. If you don't see your
@@ -34,13 +27,13 @@ galaxy_info:
   platforms:
     - name: Fedora
       versions:
-      - 32
-      - 31
-      - 30
+        - 32
+        - 31
+        - 30
     - name: EPEL
       versions:
-      - 7
-      - 8
+        - 7
+        - 8
 
   galaxy_tags: []
     # List tags for your role here, one per line. A tag is
