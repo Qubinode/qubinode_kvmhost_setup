@@ -32,8 +32,9 @@ jobs:
         ansible-lint -x 206,204 project/setup_kvmhost.yml
     - name: Ansible Check 
       run: |
+        mkdir -p $HOME/.ansible/roles
         cd $HOME 
-        ln -s  qubinode-installer/project/roles/qubinode_kvmhost_setup /etc/ansible/roles
+        ln -s  qubinode-installer/project/roles/qubinode_kvmhost_setup $HOME/.ansible/roles
         cat >test.yml<<EOF
         - hosts: localhost
         become: yes
@@ -46,7 +47,7 @@ jobs:
           kvm_host_mask_prefix: 24
           ssh_username: admin
           vm_libvirt_net: qubinet
-          cicd: true
+          cicd_test: true
         roles:
           - qubinode_kvmhost_setup
         EOF
