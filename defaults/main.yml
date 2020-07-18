@@ -1,5 +1,5 @@
 ---
-# KVM host packages
+# KVM host RHEL 8 packages
 libvirt_pkgs:
    - virt-install
    - libvirt-daemon-config-network
@@ -19,20 +19,19 @@ libvirt_pkgs:
    - bind-utils
    - yum-utils
    - iptables-services
-   - bridge-utils
    - bash-completion
    - kexec-tools
    - sos
    - psacct
    - vim
-   - pyOpenSSL
    - device-mapper-event-libs
    - device-mapper-libs
    - httpd-tools
    - java-1.8.0-openjdk-devel.x86_64
    - tmux
-   - patch
-   - python-dns
+   - python3-dns
+   - python3-lxml
+   - cockpit-machines
 
 libvirt_services:
   - libvirtd
