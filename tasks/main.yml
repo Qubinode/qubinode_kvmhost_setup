@@ -60,6 +60,10 @@
   include_tasks: storage_pool.yml
   when: not cicd_test|bool
 
+- name: copy qcow image to machine
+  include_tasks: copy_qcow_image.yml
+  when: not cicd_test|bool
+
 - name: install cockpit
   package:
     name: "{{ cockpit_packages }}"

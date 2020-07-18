@@ -1,4 +1,6 @@
 ---
+project_dir: /home/admin/project
+
 # KVM host RHEL 8 packages
 libvirt_pkgs:
    - virt-install
@@ -31,7 +33,7 @@ libvirt_pkgs:
    - tmux
    - python3-dns
    - python3-lxml
-   - cockpit-machines
+   - cockpit-machi
 
 libvirt_services:
   - libvirtd
@@ -75,8 +77,8 @@ libvirt_host_networks:
     mac: "{{ kvm_host_macaddr }}"
 
 
-use_dns: idm # use idm or use libvirt
 
+qcow_rhel_name: rhel-8.2-x86_64-kvm.qcow2
 
 kvm_host_ip: "{{ kvm_host_ipaddr }}"
 
