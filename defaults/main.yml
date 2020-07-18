@@ -57,6 +57,8 @@ libvirt_disk: false
 # If there are other types of networks you want to support, make sure
 # to create the associated libvirt network xml template
 qubinode_bridge_name: qubibr0 
+qubinode_bridge_fact: "{{ ansible_qubibr0.active }}"
+
 # name of the libvirt network to use
 libvirt_host_networks:
   - name: "{{ vm_libvirt_net | default(qubinet) }}"

@@ -21,7 +21,12 @@
 
 - name: setting bridge name
   set_fact:
-    bridge_name: "ansible_{{ qubinode_bridge_name }}"
+    bridge_name: "{{ qubinode_bridge_fact }}"
+  ignore_errors: true
+
+- name: Configure bridge
+  command:  echo "we need to configure the bridge."
+  when: not bridge_name | bool or bridge_name is undefined
 
 - name: setup bridge interface
   vars:
@@ -31,7 +36,7 @@
     dest: /etc/sysconfig/network-scripts/ifcfg-{{ libvirt_host_networks[type_idx].bridge_device }}
     mode: 0640
   with_items: "{{ libvirt_host_networks[type_idx] }}"
-  when: bridge_name is not defined
+  when: not bridge_name | bool or bridge_name is undefined
   become: True
 
 - name: setup ethernet device interface
@@ -44,9 +49,54 @@
   with_items: "{{ libvirt_host_networks[type_idx] }}"
   become: True
   register: create_slave_device
-  when: bridge_name  is not defined
-  notify:
-    - Activate and Restart Network
+  when: not bridge_name | bool or bridge_name is undefined
+
+# Using the systemd module to restart networking seems to not properly panos_restart
+# the networking subsystem, further debugging is required to find root issue.
+# The command module gives us the behaviour we expect which is network restart without loosing
+# connectivity and the bridge interface comes up.
+
+- name: restart network service
+  command: "systemctl restart {{ item }}"
+  args:
+    warn: no
+  changed_when: false
+  with_items:
+    - network
+    - NetworkManager
+    - libvirtd
+  when: (("RedHat" and ansible_distribution_major_version == '7') and (not bridge_name | bool or bridge_name is undefined))
+
+- name: restart network service
+  command: "systemctl restart {{ item }}"
+  args:
+    warn: no
+  changed_when: false
+  with_items:
+    - NetworkManager
+    - libvirtd
+  when: (("RedHat" and ansible_distribution_major_version == '8') and (not bridge_name | bool or bridge_name is undefined))
+
+- name: active bridge connection
+  command: "nmcli connection up {{ libvirt_host_networks[type_idx].bridge_device }}"
+  args:
+    warn: no
+  changed_when: false
+  when: (("RedHat" and ansible_distribution_major_version == '8') and (not bridge_name | bool or bridge_name is undefined))
+
+- name: diable old connection
+  command: "sudo nmcli connection down {{ libvirt_host_networks[type_idx].bridge_slave_dev }}"
+  args:
+    warn: no
+  changed_when: false
+  when: (("RedHat" and ansible_distribution_major_version == '8')  and (not bridge_name | bool or bridge_name is undefined))
+  ignore_errors: yes
+
+- name: update /etc/resolv.conf
+  template:
+    src: resolv.conf.j2
+    dest: /etc/resolv.conf
+  when: not bridge_name | bool or bridge_name is undefined
 
 - name: Ensure libvirt bridge network is defined
   vars:
@@ -60,4 +110,3 @@
     xml: '{{ (lookup("template", "br_network.xml.j2")) }}'
   when: net_create|bool
   become: True
-
