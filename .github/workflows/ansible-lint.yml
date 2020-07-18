@@ -37,19 +37,19 @@ jobs:
         ln -s  qubinode-installer/project/roles/qubinode_kvmhost_setup $HOME/.ansible/roles
         cat >test.yml<<EOF
         - hosts: localhost
-        become: yes
-        vars:
-          kvm_host_ip: 127.0.0.1
-          kvm_host_interface: eth0
-          kvm_host_gw: 127.0.0.1
-          kvm_host_macaddr: example
-          kvm_host_netmask: 255.255.255.0
-          kvm_host_mask_prefix: 24
-          ssh_username: admin
-          vm_libvirt_net: qubinet
-          cicd_test: true
-        roles:
-          - qubinode_kvmhost_setup
+          become: yes
+          vars:
+            kvm_host_ip: 127.0.0.1
+            kvm_host_interface: eth0
+            kvm_host_gw: 127.0.0.1
+            kvm_host_macaddr: example
+            kvm_host_netmask: 255.255.255.0
+            kvm_host_mask_prefix: 24
+            ssh_username: admin
+            vm_libvirt_net: qubinet
+            cicd_test: true
+          roles:
+            - qubinode_kvmhost_setup
         EOF
         ansible-playbook  test.yml --check -v
 
