@@ -32,7 +32,7 @@ jobs:
         ansible-lint -x 206,204 project/setup_kvmhost.yml
     - name: Ansible Check 
       run: |
-        if [ ! -d /home/runner/.ansible/roles/qubinode_kvmhost_setup]; 
+        if [ ! -d /home/runner/.ansible/roles/qubinode_kvmhost_setup ]; 
         then 
           mkdir -p /home/runner/.ansible/roles
           cd  /home/runner/.ansible/roles
