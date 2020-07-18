@@ -41,7 +41,6 @@ jobs:
           git checkout dev
         fi
         cd $HOME
-        ln -s   /home/runner/qubinode-installer/project/roles/qubinode_kvmhost_setup /home/runner/.ansible/roles
         cat >test.yml<<EOF
         - hosts: localhost
           become: yes
