@@ -39,7 +39,7 @@
   fail: msg="Bailing out. this play requires 'qubinode_bridge_name' qubinode bridge name"
   when: qubinode_bridge_name |length == 0
 
-- name: get the index of a dicta
+- name: get the index of a dict
   debug:
     msg: "{{ item.mac }}"
   loop: "{{ libvirt_host_networks }}"
