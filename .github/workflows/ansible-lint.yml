@@ -30,11 +30,10 @@ jobs:
         git checkout python-build
         ansible-galaxy install git+https://github.com/Qubinode/qubinode_kvmhost_setup.git,dev --force
         ansible-lint -x 206,204 project/setup_kvmhost.yml
-    - name: Ansible Check 
+    - name: Ansible Check
       run: |
-      rm -rf /home/runner/.ansible/roles/qubinode_kvmhost_setup
-        if [ ! -d /home/runner/.ansible/roles/qubinode_kvmhost_setup ]; 
-        then 
+        if [ ! -d /home/runner/.ansible/roles/qubinode_kvmhost_setup ];
+        then
           mkdir -p /home/runner/.ansible/roles
           cd  /home/runner/.ansible/roles
           git clone https://github.com/Qubinode/qubinode_kvmhost_setup.git
