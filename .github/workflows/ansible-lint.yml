@@ -32,9 +32,9 @@ jobs:
         ansible-lint -x 206,204 project/setup_kvmhost.yml
     - name: Ansible Check 
       run: |
-        mkdir -p /home/runner/roles:
+        mkdir -p /home/runner/roles
         cd $HOME 
-        ln -s   /home/runner/qubinode-installer/project/roles/qubinode_kvmhost_setup /home/runner/roles:
+        ln -s   /home/runner/qubinode-installer/project/roles/qubinode_kvmhost_setup /home/runner/roles
         cat >test.yml<<EOF
         - hosts: localhost
           become: yes
