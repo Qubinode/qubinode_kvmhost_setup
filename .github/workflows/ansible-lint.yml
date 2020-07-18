@@ -32,11 +32,14 @@ jobs:
         ansible-lint -x 206,204 project/setup_kvmhost.yml
     - name: Ansible Check 
       run: |
-        mkdir -p /home/runner/.ansible/roles
-        cd  /home/runner/.ansible/roles
-        git clone https://github.com/Qubinode/qubinode_kvmhost_setup.git
-        cd qubinode_kvmhost_setup
-        git checkout dev
+        if [ ! -d /home/runner/.ansible/roles/qubinode_kvmhost_setup]; 
+        then 
+          mkdir -p /home/runner/.ansible/roles
+          cd  /home/runner/.ansible/roles
+          git clone https://github.com/Qubinode/qubinode_kvmhost_setup.git
+          cd qubinode_kvmhost_setup
+          git checkout dev
+        fi
         cd $HOME
         ln -s   /home/runner/qubinode-installer/project/roles/qubinode_kvmhost_setup /home/runner/.ansible/roles
         cat >test.yml<<EOF
