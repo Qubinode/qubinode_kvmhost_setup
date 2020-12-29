@@ -34,6 +34,8 @@ libvirt_pkgs:
    - python3-dns
    - python3-lxml
    - cockpit-machi
+   - cargo
+   - lm_sensors
 
 libvirt_services:
   - libvirtd
@@ -101,7 +103,8 @@ libvirt_host_storage_pools:
 configure_bridge: true
 
 # Configure the user bash shell login prompt
-configure_shell: yes
+# This will overwrite your existing .bashrc, .vimrc and other terminal configuration files
+configure_shell: no
 
 # packages for cockpit
 cockpit_packages: "cockpit cockpit-dashboard cockpit-storaged cockpit-packagekit cockpit-machines cockpit-bridge subscription-manager-cockpit cockpit-ws"
