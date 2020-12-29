@@ -1,21 +1,21 @@
 - name: Replace .bashrc file
   copy:
     src: bashrc.sh
-    dest: "/home/{{ ssh_username }}/.bashrc"
+    dest: "/home/{{ admin_user }}/.bashrc"
     backup: yes
   become: True
 
 - name: Replace .bash_profile file
   copy:
     src:  bash_profile.sh
-    dest: "/home/{{ ssh_username }}/.bash_profile"
+    dest: "/home/{{ admin_user }}/.bash_profile"
     backup: yes
   become: True
 
 - name: Replace .bash_aliases file
   copy:
     src:  bash_aliases.sh
-    dest: "/home/{{ ssh_username }}/.bash_aliases"
+    dest: "/home/{{ admin_user }}/.bash_aliases"
     backup: yes
   become: True
 
@@ -23,6 +23,6 @@
 - name: Replace .bash_logout file
   copy:
     src:  bash_logout.sh
-    dest: "/home/{{ ssh_username }}/.bash_logout"
+    dest: "/home/{{ admin_user }}/.bash_logout"
     backup: yes
   become: True

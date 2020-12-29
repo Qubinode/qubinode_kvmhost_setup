@@ -15,9 +15,9 @@
   fail: msg="Bailing out. this play requires 'kvm_host_gw' KVM host kvm host gateway"
   when: kvm_host_gw |length == 0
 
-- name: Testing 'ssh_username' ssh username"
-  fail: msg="Bailing out. this play requires 'ssh_username' ssh username"
-  when: ssh_username |length == 0
+- name: Testing 'admin_user' ssh username"
+  fail: msg="Bailing out. this play requires 'admin_user' ssh username"
+  when: admin_user |length == 0
 
 - name: Testing 'kvm_host_domain' kvm host domain
   fail: msg="Bailing out. this play requires 'kvm_host_domain' kvm host domain"

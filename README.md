@@ -33,7 +33,7 @@ Role Variables
 | qubinode_bridge_name | default qubibr0 name of bridge network |
 | qubinode_bridge_fact | name of bridge to check ansible_qubibr0.active for active status |
 | qcow_rhel_name | name of default qcow image |
-| ssh_username | ssh username for kvm server |
+| admin_user | ssh username for kvm server |
 | kvm_host_domain | default value is "lab.example" |
 | kvm_host_dns_server | default value is  "1.1.1.1"  |
 | dns_servers | default value is"{{ dns_server }}" and 8.8.8.8 |
@@ -62,7 +62,7 @@ Example Playbook
         kvm_host_gw: '192.168.1.1'
         kvm_host_netmask: 255.255.255.0
         kvm_host_mask_prefix: 24
-        ssh_username: admin
+        admin_user: admin
         vm_libvirt_net: qubinet
         cicd_test: true
       roles:

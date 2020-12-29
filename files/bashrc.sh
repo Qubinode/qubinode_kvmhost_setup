@@ -24,9 +24,9 @@ shopt -s checkwinsize
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
 # set variable identifying the chroot you work in (used in the prompt below)
-if [ -z "${debian_chroot}" ] && [ -r /etc/debian_chroot ]; then
-    debian_chroot=$(cat /etc/debian_chroot)
-fi
+#if [ -z "${debian_chroot}" ] && [ -r /etc/debian_chroot ]; then
+#    debian_chroot=$(cat /etc/debian_chroot)
+#fi
 
 
 # Reset
@@ -148,7 +148,7 @@ function __makePS1() {
 
     PS1=''
 
-    PS1+="${debian_chroot:+($debian_chroot)}"
+    #PS1+="${debian_chroot:+($debian_chroot)}"
 
     if [ -n "${VIRTUAL_ENV}" ]; then
         local VENV=`basename $VIRTUAL_ENV`

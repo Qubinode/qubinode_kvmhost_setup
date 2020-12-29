@@ -9,7 +9,7 @@ kvm_host_netmask: ""
 kvm_host_mask_prefix: ""
 kvm_host_bootproto: 'dhcp'
 kvm_bridge_type: 'Bridge'
-ssh_username: ""
+admin_user: ""
 kvm_host_domain: "lab.example"
 kvm_host_dns_server: "1.1.1.1"
 dns_servers:

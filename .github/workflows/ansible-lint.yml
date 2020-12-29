@@ -51,7 +51,7 @@ jobs:
             kvm_host_macaddr: example
             kvm_host_netmask: 255.255.255.0
             kvm_host_mask_prefix: 24
-            ssh_username: admin
+            admin_user: admin
             vm_libvirt_net: qubinet
             cicd_test: true
           roles:
