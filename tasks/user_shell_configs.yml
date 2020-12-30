@@ -27,7 +27,7 @@
 #  register: vim_plug
 
 - name: Install vimplug plugin manager
-  when: vim_plug.stat.exists == False
+  #when: vim_plug.stat.exists == False
   become: yes
   become_user: "{{ shell_user }}"
   vars:
