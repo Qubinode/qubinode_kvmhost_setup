@@ -58,6 +58,11 @@ libvirt_host_storage_pools:
 # This will overwrite your existing .bashrc, .vimrc and other terminal configuration files
 configure_shell: no
 
+# users whose shell will be configured
+shell_users:
+  - "{{ admin_user }}"
+  - root
+
 # set to true to test in container
 cicd_test: false
 
@@ -70,7 +75,7 @@ kvm_host_ip: "{{ kvm_host_ipaddr }}"
 project_dir: /home/admin/project
 
 # KVM host RHEL 8 packages
-libvirt_pkgs:
+required_rpm_pakcages:
    - virt-install
    - libvirt-daemon-config-network
    - libvirt-daemon-kvm
@@ -101,7 +106,6 @@ libvirt_pkgs:
    - tmux
    - python3-dns
    - python3-lxml
-   - cockpit-machi
    - cargo
    - lm_sensors
 
@@ -110,7 +114,18 @@ libvirt_services:
   - tuned
 
 # packages for cockpit
-cockpit_packages: "cockpit cockpit-dashboard cockpit-storaged cockpit-packagekit cockpit-machines cockpit-bridge subscription-manager-cockpit cockpit-ws"
+cockpit_packages:
+  - cockpit
+  - cockpit-dashboard
+  - cockpit-storaged
+  - cockpit-packagekit
+  - cockpit-machines
+  - cockpit-bridge
+  - subscription-manager-cockpit
+  - cockpit-ws
+
+# synth shell global directory
+synth_shell_dir: /etc
 
 ##***********************
 ## Deprecated vars

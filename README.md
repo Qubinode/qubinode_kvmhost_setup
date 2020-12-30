@@ -15,7 +15,7 @@ Role Variables
 | variable  | definition |
 | ------------- | ------------- |
 | project_dir | location of code and qcow iamge | 
-| libvirt_pkgs | list of packages that will be installed |
+| required_rpm_pakcages | list of packages that will be installed |
 | libvirt_services | libvirt services |
 | libvirt_host_networks | dictionary variable that creates libvirt network xml file. must set the name, mode, and bridge key |
 | libvirt_host_pool | Content Cell  |

@@ -11,20 +11,22 @@
   include_tasks: validate.yml
   when: not cicd_test|bool
 
-- name: configure shell extras
-  include_tasks: configure_shell.yml
-  when: configure_shell|bool
-
-- name: ensure libvirt packages are installed
+- name: ensure required packages are installed
+  become: yes
   shell: >
     rpm -q "{{ item }}" || yum install -y "{{ item }}" && echo yes
   args:
     warn: false
-  loop: "{{ libvirt_pkgs }}"
+  loop: "{{ required_rpm_pakcages }}"
   register: pkg_installed
   changed_when: pkg_installed.stdout == 'yes'
 
+- name: configure shell extras
+  include_tasks: configure_shell.yml
+  when: configure_shell|bool
+
 - name: enable libvirt services
+  become: yes
   service:
     name: "{{ item }}"
     enabled: yes
@@ -32,12 +34,14 @@
   with_items: "{{ libvirt_services }}"
 
 - name: Add user to libvirt group
+  become: yes
   user:
     name: "{{ admin_user }}"
     groups: libvirt,qemu
     append: yes
 
 - name: Allow non-root users to libvirt unix_sock_group
+  become: yes
   lineinfile:
     dest: /etc/libvirt/libvirtd.conf
     regexp: '^#\s*unix_sock_group.*$'
@@ -45,6 +49,7 @@
   notify: Reload libvirtd service
 
 - name: Allow non-root users to libvirt unix_sock_rw_perms
+  become: yes
   lineinfile:
     dest: /etc/libvirt/libvirtd.conf
     regexp: '^#\s*unix_sock_rw_perms.*$'
@@ -52,6 +57,7 @@
   notify: Reload libvirtd service
 
 - name: Allow non-root users to libvirt unix_sock_admin_perms
+  become: yes
   lineinfile:
     dest: /etc/libvirt/libvirtd.conf
     regexp: '^#\s*unix_sock_admin_perms.*$'
@@ -59,6 +65,7 @@
   notify: Reload libvirtd service
 
 - name: start tuned profile virtual-host
+  become: yes
   shell: |
    set -o pipefail &&  tuned-adm profile virtual-host
   register: start_tuned
@@ -92,22 +99,26 @@
 #  when: not cicd_test|bool
 
 - name: install cockpit
+  become: yes
   package:
     name: "{{ cockpit_packages }}"
     state: present
   ignore_errors: yes
 
 - name: enable cockpit service
+  become: yes
   service:
     name: cockpit
     enabled: yes
     state: started
 
 - name: enable firewall ports for cockpit
+  become: yes
   firewalld:
     service: cockpit
     permanent: yes
     state: enabled
   when: not cicd_test|bool
+
 #- name: Flush handlers
 #  meta: flush_handlers

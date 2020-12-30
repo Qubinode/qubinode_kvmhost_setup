@@ -1,0 +1,37 @@
+##-----------------------------------------------------
+## synth-shell-greeter.sh
+if [ -f {{ synth_shell_dir }}/synth-shell/synth-shell-greeter.sh ] && [ -n "$( echo $- | grep i )" ]; then
+        source {{ synth_shell_dir }}/synth-shell/synth-shell-greeter.sh
+fi
+
+##-----------------------------------------------------
+## synth-shell-prompt.sh
+#if [ -f {{ synth_shell_dir }}/synth-shell/synth-shell-prompt.sh ] && [ -n "$( echo $- | grep i )" ]; then
+#       source {{ synth_shell_dir }}/synth-shell/synth-shell-prompt.sh
+#fi
+
+##-----------------------------------------------------
+## alias
+if [ -f {{ synth_shell_dir }}/synth-shell/alias.sh ] && [ -n "$( echo $- | grep i )" ]; then
+        source {{ synth_shell_dir }}/synth-shell/alias.sh
+fi
+
+##-----------------------------------------------------
+## better-history
+if [ -f {{ synth_shell_dir }}/synth-shell/better-history.sh ] && [ -n "$( echo $- | grep i )" ]; then
+        source {{ synth_shell_dir }}/synth-shell/better-history.sh
+fi
+
+## Startship shell prompt
+if [ -f /usr/local/sbin/starship ]
+then
+    eval "$(starship init bash)"
+fi
+
+## Use the Z commmand
+if [ -f /usr/local/bin/z.sh ]
+then
+    . /usr/local/bin/z.sh
+fi
+
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
