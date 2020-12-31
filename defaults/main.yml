@@ -108,6 +108,7 @@ required_rpm_pakcages:
    - python3-lxml
    - cargo
    - lm_sensors
+   - python3-netaddr
 
 libvirt_services:
   - libvirtd
