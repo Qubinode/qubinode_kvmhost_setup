@@ -106,3 +106,9 @@
       args:
         chdir: "{{ tempdir_kvmhost.path }}/fonts"
         creates: "{{ user_homedir }}/.local/share/fonts/ter-powerline-x12b.pcf.gz" 
+
+- name: Run vim-plug PlugInstall
+  become: yes
+  become_user: "{{ shell_user }}"
+  shell: vim -es -u vimrc -i NONE -c "PlugInstall" -c "qa"
+  changed_when: False
