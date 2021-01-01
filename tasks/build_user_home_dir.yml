@@ -15,6 +15,3 @@
   vars:
     user_homedir: "{{ current_user_homedir }}"
   include_tasks: user_shell_configs.yml
-  #loop: "{{ shell_users }}"
-  #loop_control:
-  #  loop_var: shell_user

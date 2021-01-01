@@ -3,7 +3,6 @@
   stat:
     path: "{{ project_dir }}/{{ os_qcow_image_name }}"
   register: main_qcow_check
-  become: True
   ignore_errors: yes
 
 - name: Fail when {{ project_dir }}/{{ os_qcow_image_name }} does not exist
@@ -14,7 +13,6 @@
   stat:
     path: "{{ kvm_host_libvirt_dir }}/{{ os_qcow_image_name }}"
   register: kvm_qcow_check
-  become: True
   ignore_errors: yes
 
 - name: "Copy  {{ qcow_rhel_name }}  to {{ kvm_host_libvirt_dir }}"

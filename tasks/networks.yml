@@ -3,7 +3,6 @@
   virt_net:
     command: list_nets
   register: libvirt_nets
-  become: yes
 
 - name: ensure libvirt networks are setup
   vars:
@@ -11,7 +10,6 @@
     net_mode: "{{ libvirt_host_networks[libvirt_idx].mode }}"
     net_create: "{{ libvirt_host_networks[libvirt_idx].create }}"
   when: net_name in libvirt_nets.list_nets
-  become: yes
   block:
     - name: Ensure libvirt nat network {{ net_name }} is defined
       virt_net:

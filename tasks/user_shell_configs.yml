@@ -71,7 +71,7 @@
   become_user: "{{ shell_user }}"
   unarchive:
     src: vim.zip
-    dest: "{{ user_homedir }}/.config"
+    dest: "{{ user_homedir }}"
     owner: "{{ shell_user }}"
     group: "{{ shell_user }}"
 
@@ -106,9 +106,3 @@
       args:
         chdir: "{{ tempdir_kvmhost.path }}/fonts"
         creates: "{{ user_homedir }}/.local/share/fonts/ter-powerline-x12b.pcf.gz" 
-
-- name: Run vim-plug PlugInstall
-  become: yes
-  become_user: "{{ shell_user }}"
-  shell: vim -es -u vimrc -i NONE -c "PlugInstall" -c "qa"
-  changed_when: False

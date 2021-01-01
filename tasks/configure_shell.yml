@@ -7,27 +7,23 @@
   changed_when: False
 
 - name: Extract synth-shell
-  become: yes
   unarchive:
     src: synth-shell.zip
     dest: "/etc"
 
 - name: Deploy qubinode global bashrc
-  become: yes
   template:
     src: bashrc.j2
     dest: "/etc/profile.d/qubinode.sh"
     mode: 0644    
 
 - name: Download startship
-  become: yes
   unarchive:
     src: https://github.com/starship/starship/releases/latest/download/starship-x86_64-unknown-linux-musl.tar.gz
     remote_src: yes
     dest: /usr/local/sbin
 
 - name: Download k9s
-  become: yes
   unarchive:
     src: https://github.com/derailed/k9s/releases/download/v0.24.2/k9s_Linux_x86_64.tar.gz
     remote_src: yes
@@ -35,7 +31,6 @@
     creates: /usr/local/sbin/k9s
 
 - name: check if z cli tool is present
-  become: yes
   stat:
     path: /usr/local/bin/z.sh
   register: z_cli
@@ -49,19 +44,16 @@
         dest: "{{ tempdir_kvmhost.path }}/z"
     
     - name: Copy z man page
-      become: yes
       copy:
         src: "{{ tempdir_kvmhost.path }}/z/z.1"
         dest: /usr/local/share/man/man1/z.1
     
     - name: Copy z cli tool to /usr/local/bin
-      become: yes
       copy:
         src: "{{ tempdir_kvmhost.path }}/z/z.sh"
         dest: /usr/local/bin/z.sh
 
 - name: Install additional cli tools via python
-  become: yes
   pip:
     name:
       - httpie

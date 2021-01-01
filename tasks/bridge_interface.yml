@@ -1,6 +1,5 @@
 ---
 - name: Checking libvirt_host_networks[type_idx].bridge_device variable
-  become: yes
   fail: msg="Bailing out. this play requires libvirt_host_networks[type_idx].bridge_device"
   with_items: "{{ libvirt_host_networks[type_idx] }}"
   when:
@@ -14,7 +13,6 @@
 #  with_items: "{{ libvirt_host_networks[type_idx] }}"
 #  when: libvirt_host_networks[type_idx].mode == 'bridge'
 - name: Check _networks[type_idx].bridge_slave_dev variable
-  become: yes
   fail: msg="Bailing out. this play requires libvirt_host_networks[type_idx].bridge_slave_dev"
   with_items: "{{ libvirt_host_networks[type_idx] }}"
   when:
@@ -22,18 +20,15 @@
     - libvirt_host_networks[type_idx].mode == 'bridge'
 
 - name: setting bridge name
-  become: yes
   set_fact:
     bridge_name: "{{ qubinode_bridge_fact }}"
   ignore_errors: true
 
 - name: Configure bridge
-  become: yes
   command:  echo "we need to configure the bridge."
   when: not bridge_name | bool or bridge_name is undefined
 
 - name: setup bridge interface
-  become: yes
   vars:
     bridge_idx: "{{ type_idx }}"
   template:
@@ -44,7 +39,6 @@
   when: not bridge_name | bool or bridge_name is undefined
 
 - name: setup ethernet device interface
-  become: yes
   vars:
     bridge_idx: "{{ type_idx }}"
   template:
@@ -61,7 +55,6 @@
 # connectivity and the bridge interface comes up.
 
 - name: restart network service
-  become: yes
   command: "systemctl restart {{ item }}"
   args:
     warn: no
@@ -73,7 +66,6 @@
   when: (("RedHat" and ansible_distribution_major_version == '7') and (not bridge_name | bool or bridge_name is undefined))
 
 - name: restart network service
-  become: yes
   command: "systemctl restart {{ item }}"
   args:
     warn: no
@@ -84,7 +76,6 @@
   when: (("RedHat" and ansible_distribution_major_version == '8') and (not bridge_name | bool or bridge_name is undefined))
 
 - name: active bridge connection
-  become: yes
   command: "nmcli connection up {{ libvirt_host_networks[type_idx].bridge_device }}"
   args:
     warn: no
@@ -92,7 +83,6 @@
   when: (("RedHat" and ansible_distribution_major_version == '8') and (not bridge_name | bool or bridge_name is undefined))
 
 - name: diable old connection
-  become: yes
   command: "sudo nmcli connection down {{ libvirt_host_networks[type_idx].bridge_slave_dev }}"
   args:
     warn: no
@@ -101,14 +91,12 @@
   ignore_errors: yes
 
 - name: update /etc/resolv.conf
-  become: yes
   template:
     src: resolv.conf.j2
     dest: /etc/resolv.conf
   when: not bridge_name | bool or bridge_name is undefined
 
 - name: Ensure libvirt bridge network is defined
-  become: yes
   vars:
     net_name: "{{ libvirt_host_networks[type_idx].name }}"
     net_mode: "{{ libvirt_host_networks[type_idx].mode }}"

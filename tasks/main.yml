@@ -8,7 +8,6 @@
   include_tasks: verify_variables.yml
 
 - name: ensure required packages are installed
-  become: yes
   shell: >
     rpm -q "{{ item }}" || yum install -y "{{ item }}" && echo yes
   args:

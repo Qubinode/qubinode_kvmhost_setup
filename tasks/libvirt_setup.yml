@@ -4,7 +4,6 @@
   when: not cicd_test|bool
 
 - name: enable libvirt services
-  become: yes
   service:
     name: "{{ item }}"
     enabled: yes
@@ -12,7 +11,6 @@
   with_items: "{{ libvirt_services }}"
 
 - name: start tuned profile virtual-host
-  become: yes
   shell: |
    set -o pipefail &&  tuned-adm profile virtual-host
   register: start_tuned
