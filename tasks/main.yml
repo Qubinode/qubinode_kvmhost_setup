@@ -7,10 +7,6 @@
 - name: validate variables are defined
   include_tasks: verify_variables.yml
 
-- name: validate virtualization extensions are available to this host
-  include_tasks: validate.yml
-  when: not cicd_test|bool
-
 - name: ensure required packages are installed
   become: yes
   shell: >
@@ -25,100 +21,12 @@
   include_tasks: configure_shell.yml
   when: configure_shell|bool
 
-- name: enable libvirt services
-  become: yes
-  service:
-    name: "{{ item }}"
-    enabled: yes
-    state: started
-  with_items: "{{ libvirt_services }}"
+- name: Setup Libvirt
+  include_tasks: libvirt_setup.yml
 
-- name: Add user to libvirt group
-  become: yes
-  user:
-    name: "{{ admin_user }}"
-    groups: libvirt,qemu
-    append: yes
-
-- name: Allow non-root users to libvirt unix_sock_group
-  become: yes
-  lineinfile:
-    dest: /etc/libvirt/libvirtd.conf
-    regexp: '^#\s*unix_sock_group.*$'
-    line: 'unix_sock_group = "libvirt"'
-  notify: Reload libvirtd service
-
-- name: Allow non-root users to libvirt unix_sock_rw_perms
-  become: yes
-  lineinfile:
-    dest: /etc/libvirt/libvirtd.conf
-    regexp: '^#\s*unix_sock_rw_perms.*$'
-    line: 'unix_sock_rw_perms = "0770"'
-  notify: Reload libvirtd service
-
-- name: Allow non-root users to libvirt unix_sock_admin_perms
-  become: yes
-  lineinfile:
-    dest: /etc/libvirt/libvirtd.conf
-    regexp: '^#\s*unix_sock_admin_perms.*$'
-    line: 'unix_sock_admin_perms = "0700"'
-  notify: Reload libvirtd service
-
-- name: start tuned profile virtual-host
-  become: yes
-  shell: |
-   set -o pipefail &&  tuned-adm profile virtual-host
-  register: start_tuned
-  changed_when: start_tuned.rc != 0
-  args:
-    executable: /bin/bash
-
-- name: configure bridge interface for libvirt
-  include_tasks: bridge_interface.yml
-  #when: configure_bridge
-  loop: "{{ libvirt_host_networks }}"
-  loop_control:
-    index_var: type_idx
-    loop_var: bridge_item
-  when: (bridge_item.mode == 'bridge' and  not cicd_test|bool)
-
-- name: configure libvirt network
-  loop: "{{ libvirt_host_networks }}"
-  loop_control:
-    index_var: libvirt_idx
-    loop_var: libvirt_item
-  include_tasks: networks.yml
-  when: not cicd_test|bool
-
-- name: configure libvirt storage pool
-  include_tasks: storage_pool.yml
-  when: not cicd_test|bool
-
-#- name: copy qcow image to machine    #this task is deprecated and should be remove 12/28/20
-#  include_tasks: copy_qcow_image.yml
-#  when: not cicd_test|bool
-
-- name: install cockpit
-  become: yes
-  package:
-    name: "{{ cockpit_packages }}"
-    state: present
-  ignore_errors: yes
-
-- name: enable cockpit service
-  become: yes
-  service:
-    name: cockpit.socket
-    enabled: yes
-    state: started
-
-- name: enable firewall ports for cockpit
-  become: yes
-  firewalld:
-    service: cockpit
-    permanent: yes
-    state: enabled
-  when: not cicd_test|bool
+- name: Setup Cockpit
+  include_tasks: cockpit_setup.yml
+  when: enable_cockpit|bool
 
 #- name: Flush handlers
 #  meta: flush_handlers

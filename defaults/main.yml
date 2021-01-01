@@ -54,6 +54,14 @@ libvirt_host_storage_pools:
     autostart: yes
     path: "{{ kvm_host_libvirt_dir }}"
 
+# Set to yes to add the admin_user to the libvirt group
+# and change libvirt to be accessible user 
+enable_libvirt_admin_user: no
+
+# The actual libvirt group, users added to this group will have admin access to KVM
+# when enable_libvirt_admin_user is set
+kvm_host_group: libvirt
+
 # Configure the user bash shell login prompt
 # This will overwrite your existing .bashrc, .vimrc and other terminal configuration files
 configure_shell: no
