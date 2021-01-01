@@ -1,0 +1,39 @@
+---
+- name: Install RHEL/Fedora Web Console (Cockpit)
+  include_role:
+    name: linux-system-roles.cockpit
+  vars:
+    #cockpit_packages: default
+    #cockpit_packages: minimal
+    cockpit_packages: full
+
+- name: Configure Firewall for Web Console
+  include_role:
+    name: linux-system-roles.firewall
+  vars:
+    firewall:
+      service: cockpit
+      state: enabled
+  when: not cicd_test|bool
+
+#- name: install cockpit
+#  become: yes
+#  package:
+#    name: "{{ cockpit_packages }}"
+#    state: present
+#  ignore_errors: yes
+#
+#- name: enable cockpit service
+#  become: yes
+#  service:
+#    name: cockpit.socket
+#    enabled: yes
+#    state: started
+#
+#- name: enable firewall ports for cockpit
+#  become: yes
+#  firewalld:
+#    service: cockpit
+#    permanent: yes
+#    state: enabled
+#  when: not cicd_test|bool

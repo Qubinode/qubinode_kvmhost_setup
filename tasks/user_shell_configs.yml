@@ -1,4 +1,12 @@
 ---
+- name: Ensure {{ user_homedir }}/.config exist
+  become: yes
+  file:
+    path: "{{ user_homedir }}/.config"
+    state: directory
+    owner: "{{ shell_user }}"
+    group: "{{ shell_user }}"   
+
 - name: Deploy startship config for {{ shell_user }} 
   become: yes
   become_user: "{{ shell_user }}"

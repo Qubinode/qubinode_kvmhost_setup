@@ -1,0 +1,46 @@
+---
+- name: validate virtualization extensions are available to this host
+  include_tasks: validate.yml
+  when: not cicd_test|bool
+
+- name: enable libvirt services
+  become: yes
+  service:
+    name: "{{ item }}"
+    enabled: yes
+    state: started
+  with_items: "{{ libvirt_services }}"
+
+- name: start tuned profile virtual-host
+  become: yes
+  shell: |
+   set -o pipefail &&  tuned-adm profile virtual-host
+  register: start_tuned
+  changed_when: start_tuned.rc != 0
+  args:
+    executable: /bin/bash
+
+- name: configure bridge interface for libvirt
+  include_tasks: bridge_interface.yml
+  #when: configure_bridge
+  loop: "{{ libvirt_host_networks }}"
+  loop_control:
+    index_var: type_idx
+    loop_var: bridge_item
+  when: (bridge_item.mode == 'bridge' and  not cicd_test|bool)
+
+- name: configure libvirt network
+  loop: "{{ libvirt_host_networks }}"
+  loop_control:
+    index_var: libvirt_idx
+    loop_var: libvirt_item
+  include_tasks: networks.yml
+  when: not cicd_test|bool
+
+- name: configure libvirt storage pool
+  include_tasks: storage_pool.yml
+  when: not cicd_test|bool
+
+- name: Make libvirt accessible by non-root user
+  include_tasks: validate.yml
+  when: enable_libvirt_admin_user|bool
