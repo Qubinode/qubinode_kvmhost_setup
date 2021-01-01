@@ -46,3 +46,4 @@ galaxy_info:
 
 dependencies:
   - linux-system-roles.cockpit
+  - linux-system-roles.firewall

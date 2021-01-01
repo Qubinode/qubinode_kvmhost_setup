@@ -54,6 +54,9 @@ libvirt_host_storage_pools:
     autostart: yes
     path: "{{ kvm_host_libvirt_dir }}"
 
+# Enable cockpit service
+enable_cockpit: no
+
 # Set to yes to add the admin_user to the libvirt group
 # and change libvirt to be accessible user 
 enable_libvirt_admin_user: no
