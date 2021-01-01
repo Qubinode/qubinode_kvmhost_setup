@@ -1,11 +1,21 @@
 ---
-- name: Create a temp directory for staging files
-  tempfile:
-    state: directory
-    suffix: kvmhost
-  register: tempdir_kvmhost
-  changed_when: False
+#- name: Create a temp directory for staging files
+#  tempfile:
+#    state: directory
+#    suffix: kvmhost
+#  register: tempdir_kvmhost
+#  changed_when: False
 
+- name: Define temp dir
+  set_fact:
+    tempdir_kvmhost_path: /tmp/kvmhost_setup
+
+- name: Create temp directory
+  file:
+    path: "{{ tempdir_kvmhost_path }}"
+    state: directory
+    mode: '0777'
+    
 - name: Extract synth-shell
   unarchive:
     src: synth-shell.zip
@@ -41,16 +51,16 @@
     - name: Download the z cli tool 
       git:
         repo: https://github.com/rupa/z
-        dest: "{{ tempdir_kvmhost.path }}/z"
+        dest: "{{ tempdir_kvmhost_path }}/z"
     
     - name: Copy z man page
       copy:
-        src: "{{ tempdir_kvmhost.path }}/z/z.1"
+        src: "{{ tempdir_kvmhost_path }}/z/z.1"
         dest: /usr/local/share/man/man1/z.1
     
     - name: Copy z cli tool to /usr/local/bin
       copy:
-        src: "{{ tempdir_kvmhost.path }}/z/z.sh"
+        src: "{{ tempdir_kvmhost_path }}/z/z.sh"
         dest: /usr/local/bin/z.sh
 
 - name: Install additional cli tools via python
@@ -73,7 +83,7 @@
 
 - name: Remove temp directory
   file:
-    path: "{{ tempdir_kvmhost.path }}"
+    path: "{{ tempdir_kvmhost_path }}"
     state: absent
-  when: tempdir_kvmhost.path is defined
+  when: tempdir_kvmhost_path is defined
   changed_when: False
