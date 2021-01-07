@@ -16,6 +16,13 @@
   register: pkg_installed
   changed_when: pkg_installed.stdout == 'yes'
 
+- name: Install required python libraries
+  become: yes
+  become_user: "{{ admin_user }}"
+  pip:
+    name: openshift
+    extra_args: --user
+
 - name: configure shell extras
   include_tasks: configure_shell.yml
   when: configure_shell|bool

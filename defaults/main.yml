@@ -116,6 +116,7 @@ required_rpm_pakcages:
    - java-1.8.0-openjdk-devel.x86_64
    - tmux
    - python3-dns
+   - python3-pip
    - python3-lxml
    - cargo
    - lm_sensors
