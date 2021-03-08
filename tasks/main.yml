@@ -5,8 +5,7 @@
   register: myresults
 
 - name: Get Architecture
-  shell: |
-    uname -m
+  shell: uname -m
   register: cpu_arch_result
   when: not delete_deployment|bool
 
