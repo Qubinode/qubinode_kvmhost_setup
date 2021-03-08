@@ -9,7 +9,7 @@
   set_fact:
     libvirt_host_vt_enabled: "{{ result.rc == 0 }}"
 
-- name: Notify if POWER8  IBM Power Systems Architecture
+- name: Notify if NOT POWER8  IBM Power Systems Architecture
   debug:
     msg: >
       This machine currently does not have POWER8 CPU
