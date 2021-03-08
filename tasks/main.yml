@@ -7,13 +7,10 @@
 - name: Get Architecture
   shell: uname -m
   register: cpu_arch_result
-  when: not delete_deployment|bool
 
 - name: set cpu_arch  
   set_fact:
     cpu_arch: "{{ cpu_arch_result.stdout }}"
-  when: not delete_deployment|bool
-
 
 - name: validate variables are defined
   include_tasks: verify_variables.yml
