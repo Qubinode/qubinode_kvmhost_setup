@@ -27,10 +27,6 @@
     - cpu_arch == 'ppc64le' 
     - not cicd_test|bool
 
-# Example showing how to end the play for specific targets
-- name: End the play TESTING
-  meta: end_host
-
 - name: configure shell extras
   include_tasks: configure_shell.yml
   when: configure_shell|bool
