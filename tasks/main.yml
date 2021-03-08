@@ -4,12 +4,36 @@
     var: libvirt_host_networks
   register: myresults
 
+- name: Get Architecture
+  shell: |
+    uname -m
+  register: cpu_arch_result
+  when: not delete_deployment|bool
+
+- name: set cpu_arch  
+  set_fact:
+    cpu_arch: "{{ cpu_arch_result.stdout }}"
+  when: not delete_deployment|bool
+
+
 - name: validate variables are defined
   include_tasks: verify_variables.yml
 
 - name: validate virtualization extensions are available to this host
   include_tasks: validate.yml
-  when: not cicd_test|bool
+  when: 
+    - cpu_arch == 'x86_64' 
+    - not cicd_test|bool
+
+- name: validate IBM Power Systems Architecture host
+  include_tasks: validate-power.yml
+  when: 
+    - cpu_arch == 'ppc64le' 
+    - not cicd_test|bool
+
+# Example showing how to end the play for specific targets
+- name: End the play TESTING
+  meta: end_host
 
 - name: configure shell extras
   include_tasks: configure_shell.yml
