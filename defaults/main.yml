@@ -29,7 +29,7 @@ libvirt_pkgs:
    - device-mapper-event-libs
    - device-mapper-libs
    - httpd-tools
-   - java-1.8.0-openjdk-devel.x86_64
+   - java-1.8.0-openjdk-devel.{{ cpu_arch }}
    - tmux
    - python3-dns
    - python3-lxml
