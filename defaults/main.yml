@@ -2,11 +2,7 @@
 ##*****************************
 ## Required User Configurations
 kvm_host_ipaddr: ""
-kvm_host_interface: ""
-kvm_host_gw: ""
-kvm_host_macaddr: ""
-kvm_host_netmask: ""
-kvm_host_mask_prefix: ""
+
 kvm_host_bootproto: 'dhcp'
 kvm_bridge_type: 'Bridge'
 admin_user: ""
@@ -59,7 +55,6 @@ create_libvirt_storage: yes
 ## Where to store libvirt VMs disk images
 libvirt_images_dir: /var/lib/libvirt/images
 ## Libvirt pool name
-libvirt_pool_name: default
 
 ###############################
 ## No need to modify these vars
