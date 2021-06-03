@@ -1,21 +1,57 @@
 ---
-#- name: Create a temp directory for staging files
-#  tempfile:
-#    state: directory
-#    suffix: kvmhost
-#  register: tempdir_kvmhost
-#  changed_when: False
+- name: Create a temp directory for staging files
+  tempfile:
+    state: directory
+    suffix: kvmhost
+  register: tempdir_kvmhost
+  changed_when: False
 
-- name: Define temp dir
+- name: Define temp dirs
   set_fact:
-    tempdir_kvmhost_path: /tmp/kvmhost_setup
+    z_tmp_dir: "{{ tempdir_kvmhost.path }}/z"
+    powerline_tmp_dir: "{{ tempdir_kvmhost.path }}/powerline"
 
 - name: Create temp directory
   file:
-    path: "{{ tempdir_kvmhost_path }}"
+    path: "{{ item }}"
     state: directory
     mode: '0777'
+  loop:
+    - "{{ z_tmp_dir }}"
+    - "{{ tempdir_kvmhost.path }}"
+
+- name: Download powerline fonts
+  git:
+    repo: 'https://github.com/powerline/fonts.git'
+    dest: "{{ powerline_tmp_dir }}/fonts"
+    depth: 1
+
+- name: check if z cli tool is present
+  stat:
+    path: /usr/local/bin/z.sh
+  register: z_cli
+
+- name: Install z cli tool
+  when: z_cli.stat.exists == False
+  block:
+    - name: Download the z cli tool 
+      git:
+        repo: https://github.com/rupa/z
+        dest: "{{ z_tmp_dir }}"
+      register: download_z_cli  
     
+    - name: Copy z man page
+      copy:
+        src: "{{ z_tmp_dir }}/z.1"
+        dest: /usr/local/share/man/man1/z.1
+        remote_src: yes
+    
+    - name: Copy z cli tool to /usr/local/bin
+      copy:
+        src: "{{ z_tmp_dir }}/z.sh"
+        dest: /usr/local/bin/z.sh
+        remote_src: yes
+
 - name: Extract synth-shell
   unarchive:
     src: synth-shell.zip
@@ -40,29 +76,6 @@
     dest: /usr/local/sbin
     creates: /usr/local/sbin/k9s
 
-- name: check if z cli tool is present
-  stat:
-    path: /usr/local/bin/z.sh
-  register: z_cli
-
-- name: Install z cli tool
-  when: z_cli.stat.exists == False
-  block:
-    - name: Download the z cli tool 
-      git:
-        repo: https://github.com/rupa/z
-        dest: "{{ tempdir_kvmhost_path }}/z"
-    
-    - name: Copy z man page
-      copy:
-        src: "{{ tempdir_kvmhost_path }}/z/z.1"
-        dest: /usr/local/share/man/man1/z.1
-    
-    - name: Copy z cli tool to /usr/local/bin
-      copy:
-        src: "{{ tempdir_kvmhost_path }}/z/z.sh"
-        dest: /usr/local/bin/z.sh
-
 - name: Install additional cli tools via python
   pip:
     name:
@@ -81,9 +94,10 @@
   loop_control:
     loop_var: shell_user
 
+
 - name: Remove temp directory
   file:
-    path: "{{ tempdir_kvmhost_path }}"
+    path: "{{ tempdir_kvmhost.path }}"
     state: absent
-  when: tempdir_kvmhost_path is defined
-  changed_when: False
+  #when: tempdir_kvmhost_path is defined
+  #changed_when: False

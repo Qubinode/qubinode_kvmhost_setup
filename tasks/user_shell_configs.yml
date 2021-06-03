@@ -92,17 +92,12 @@
         path: "{{ user_homedir }}/.config/fontconfig/conf.d"
         state: directory
         mode: '0755'
-    - name: Download powerline fonts
-      git:
-        repo: 'https://github.com/powerline/fonts.git'
-        dest: "{{ tempdir_kvmhost_path }}/fonts"
-        depth: 1
     - name: Download powerline fontconfig
       get_url:
         url: https://raw.githubusercontent.com/powerline/fonts/master/fontconfig/50-enable-terminess-powerline.conf
         dest: "{{ user_homedir }}/.config/fontconfig/conf.d/50-enable-terminess-powerline.conf"
     - name: Run powerline fonts install.sh
-      shell: "{{ tempdir_kvmhost_path }}/fonts/install.sh"
+      shell: "{{ powerline_tmp_dir }}/fonts/install.sh"
       args:
-        chdir: "{{ tempdir_kvmhost_path }}/fonts"
+        chdir: "{{ powerline_tmp_dir }}/fonts"
         creates: "{{ user_homedir }}/.local/share/fonts/ter-powerline-x12b.pcf.gz" 

@@ -35,8 +35,8 @@ Role Variables
 | qcow_rhel_name | name of default qcow image |
 | admin_user | ssh username for kvm server |
 | kvm_host_domain | default value is "lab.example" |
-| kvm_host_dns_server | default value is  "1.1.1.1"  |
-| dns_servers | default value is"{{ dns_server }}" and 8.8.8.8 |
+| primary_dns_server | default value is  "1.1.1.1"  |
+| secondary_dns_server | default value is  "8.8.8.8"  |
 | kvm_host_libvirt_dir | default value is /var/lib/libvirt/images |
 | configure_bridge | set to false to skip creating a bridge interface |
 | configure_shell | Configure the user bash shell login prompt |

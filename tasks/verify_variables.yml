@@ -23,9 +23,9 @@
   fail: msg="Bailing out. this play requires 'kvm_host_domain' kvm host domain"
   when: kvm_host_domain |length == 0
 
-- name: Testing 'kvm_host_dns_server' kvm host dns server
-  fail: msg="Bailing out. this play requires 'kvm_host_dns_server' kvm host dns server"
-  when: kvm_host_dns_server |length == 0
+- name: Testing 'kvm_host_dns_servers'
+  fail: msg="Bailing out. this play requires 'kvm_host_dns_servers' kvm host dns server"
+  when: kvm_host_dns_servers |length == 0
 
 - name: Testing 'kvm_host_bootproto' KVM host bootproto
   fail: msg="Bailing out. this play requires 'kvm_host_bootproto' KVM host bootproto"
