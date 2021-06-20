@@ -25,6 +25,9 @@
   import_tasks: cockpit_setup.yml
   when: enable_cockpit|bool
 
-#- name: Flush handlers
-#  meta: flush_handlers
+- name: update /etc/resolv.conf
+  tags: [resolv]
+  template:
+    src: resolv.conf.j2
+    dest: /etc/resolv.conf
 
