@@ -18,8 +18,6 @@ Role Variables
 | required_rpm_pakcages | list of packages that will be installed |
 | libvirt_services | libvirt services |
 | libvirt_host_networks | dictionary variable that creates libvirt network xml file. must set the name, mode, and bridge key |
-| libvirt_host_pool | Content Cell  |
-| kvm_host_ipaddr | default value is ansible_default_ipv4.address  |
 | kvm_host_ip | default value is ansible_default_ipv4.address |
 | kvm_host_interface | default value is ansible_default_ipv4.interface |
 | kvm_host_gw | default value is ansible_default_ipv4.gateway |
@@ -28,20 +26,16 @@ Role Variables
 | kvm_host_mask_prefix | default value is ansible_default_ipv4.gateway |
 | kvm_host_bootproto | default value is dhcp |
 | kvm_bridge_type | default value is Bridge |
-| storage_nic | default value is false |
-| libvirt_disk | default value is false |
 | qubinode_bridge_name | default qubibr0 name of bridge network |
-| qubinode_bridge_fact | name of bridge to check ansible_qubibr0.active for active status |
-| qcow_rhel_name | name of default qcow image |
 | admin_user | ssh username for kvm server |
 | kvm_host_domain | default value is "lab.example" |
 | primary_dns_server | default value is  "1.1.1.1"  |
 | secondary_dns_server | default value is  "8.8.8.8"  |
 | kvm_host_libvirt_dir | default value is /var/lib/libvirt/images |
-| configure_bridge | set to false to skip creating a bridge interface |
 | configure_shell | Configure the user bash shell login prompt |
 | cockpit_packages | default packages for cockpit |
 | cicd_test | set to true to test in container |
+| shell_users | list of users whose shell should be configured|
 
 
 

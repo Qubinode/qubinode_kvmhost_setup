@@ -1,8 +1,5 @@
 ---
 ##*****************************
-## Required User Configurations
-kvm_host_ipaddr: ""
-
 kvm_host_bootproto: 'dhcp'
 kvm_bridge_type: 'Bridge'
 admin_user: ""
@@ -12,15 +9,6 @@ kvm_host_dns_servers:
   - "{{ secondary_dns_server | default('8.8.8.8') }}"
 
 kvm_host_libvirt_dir: /var/lib/libvirt/images
-
-# Optional nic for storage network
-storage_nic: false
-
-# Optional dedicated disk for libvirt directory pool
-libvirt_disk: false
-
-# set to false to skip creating a bridge interface
-configure_bridge: true
 
 ## name for libvirt bridge network
 libvirt_bridge_name: qubinet
@@ -177,12 +165,11 @@ shell_users:
 # set to true to test in container
 cicd_test: false
 
-##***********************
-## Non user configuration
-#qubinode_bridge_fact: "{{ ansible_qubibr0.active }}"
-
 # The primary configuration directory
 project_dir: /home/admin/project
+
+##***********************
+## Non user configuration
 
 # KVM host RHEL 8 packages
 required_rpm_pakcages:

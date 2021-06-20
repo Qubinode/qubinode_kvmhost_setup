@@ -22,7 +22,7 @@
   import_tasks: libvirt_setup.yml
 
 - name: Setup Cockpit
-  include_tasks: cockpit_setup.yml
+  import_tasks: cockpit_setup.yml
   when: enable_cockpit|bool
 
 #- name: Flush handlers

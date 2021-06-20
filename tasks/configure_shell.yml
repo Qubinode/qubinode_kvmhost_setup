@@ -28,6 +28,7 @@
     repo: 'https://github.com/powerline/fonts.git'
     dest: "{{ powerline_tmp_dir }}/fonts"
     depth: 1
+    version: master
   tags: [ configure_shell, powerline ]
 
 - name: check if z cli tool is present
@@ -44,6 +45,7 @@
       git:
         repo: https://github.com/rupa/z
         dest: "{{ z_tmp_dir }}"
+        version: master
       register: download_z_cli  
     
     - name: Copy z man page
@@ -51,12 +53,14 @@
         src: "{{ z_tmp_dir }}/z.1"
         dest: /usr/local/share/man/man1/z.1
         remote_src: yes
+        mode: 0644
     
     - name: Copy z cli tool to /usr/local/bin
       copy:
         src: "{{ z_tmp_dir }}/z.sh"
         dest: /usr/local/bin/z.sh
         remote_src: yes
+        mode: 0644
 
 - name: Extract synth-shell
   unarchive:
