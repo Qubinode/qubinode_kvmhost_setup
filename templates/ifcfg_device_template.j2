@@ -1,8 +1,11 @@
-DEVICE={{ libvirt_host_networks[bridge_idx].bridge_slave_dev }}
-NAME={{ libvirt_host_networks[bridge_idx].bridge_device }}_slave
+# Bridge Device
+# {{ ansible_managed }}
+# commit: {{ lookup('pipe', 'git rev-parse --short HEAD') }}
+DEVICE={{ bridge_device }}
+NAME={{ bridge_name }}_port0
 TYPE=Ethernet
-HWADDR={{ libvirt_host_networks[bridge_idx].mac }}
+HWADDR={{ mac_address }}
 BOOTPROTO=none
 ONBOOT=yes
-BRIDGE={{ libvirt_host_networks[bridge_idx].bridge_device }}
+BRIDGE={{ bridge_name }}
 ZONE=public

@@ -179,7 +179,7 @@ cicd_test: false
 
 ##***********************
 ## Non user configuration
-qubinode_bridge_fact: "{{ ansible_qubibr0.active }}"
+#qubinode_bridge_fact: "{{ ansible_qubibr0.active }}"
 
 # The primary configuration directory
 project_dir: /home/admin/project

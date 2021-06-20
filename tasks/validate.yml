@@ -1,15 +1,18 @@
 ---
 - name: Verify that Virtualization Technology (VT) is enabled
+  tags: [validate_libvirt, libvirt_setup]
   command: grep -c -E 'svm|vmx' /proc/cpuinfo
   changed_when: False
   failed_when: False
   register: result
 
 - name: Set a fact about whether Virtualization Technology (VT) is enabled
+  tags: [validate_libvirt, libvirt_setup]
   set_fact:
     libvirt_host_vt_enabled: "{{ result.rc == 0 }}"
 
 - name: Notify if Virtualization Technology (VT) is disabled
+  tags: [validate_libvirt, libvirt_setup]
   debug:
     msg: >
       Virtualization Technology (VT) is currently disabled. Please enable VT
@@ -17,6 +20,7 @@
   when: not libvirt_host_vt_enabled
 
 - name: Fail if Virtualization Technology (VT) is disabled
+  tags: [validate_libvirt, libvirt_setup]
   fail:
     msg: >
       Virtualization Technology (VT) is currently disabled. Please enable VT

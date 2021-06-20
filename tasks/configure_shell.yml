@@ -5,11 +5,13 @@
     suffix: kvmhost
   register: tempdir_kvmhost
   changed_when: False
+  tags: [ configure_shell, powerline, z_tool]
 
 - name: Define temp dirs
   set_fact:
     z_tmp_dir: "{{ tempdir_kvmhost.path }}/z"
     powerline_tmp_dir: "{{ tempdir_kvmhost.path }}/powerline"
+  tags: [ configure_shell, powerline, z_tool ]
 
 - name: Create temp directory
   file:
@@ -18,21 +20,25 @@
     mode: '0777'
   loop:
     - "{{ z_tmp_dir }}"
-    - "{{ tempdir_kvmhost.path }}"
+    - "{{ tempdir_kvmhost.path }}/z"
+  tags: [ configure_shell, powerline, z_tool ]
 
 - name: Download powerline fonts
   git:
     repo: 'https://github.com/powerline/fonts.git'
     dest: "{{ powerline_tmp_dir }}/fonts"
     depth: 1
+  tags: [ configure_shell, powerline ]
 
 - name: check if z cli tool is present
   stat:
     path: /usr/local/bin/z.sh
   register: z_cli
+  tags: [ configure_shell, z_tool ]
 
 - name: Install z cli tool
   when: z_cli.stat.exists == False
+  tags: [ configure_shell, z_tool ]
   block:
     - name: Download the z cli tool 
       git:
@@ -56,18 +62,21 @@
   unarchive:
     src: synth-shell.zip
     dest: "/etc"
+  tags: [ configure_shell, synth_shell ]
 
 - name: Deploy qubinode global bashrc
   template:
     src: bashrc.j2
     dest: "/etc/profile.d/qubinode.sh"
     mode: 0644    
+  tags: [ configure_shell, bashrc ]
 
 - name: Download startship
   unarchive:
     src: https://github.com/starship/starship/releases/latest/download/starship-x86_64-unknown-linux-musl.tar.gz
     remote_src: yes
     dest: /usr/local/sbin
+  tags: [ configure_shell, startship ]
 
 - name: Download k9s
   unarchive:
@@ -75,29 +84,26 @@
     remote_src: yes
     dest: /usr/local/sbin
     creates: /usr/local/sbin/k9s
+  tags: [ configure_shell, k9s ]
 
-- name: Install additional cli tools via python
+- name: Install python pip packages
   pip:
-    name:
-      - httpie
-      - tldr
-      - kube-shell
+    name: "{{ pip_packages }}"
+  tags: [ configure_shell, install_packages ]
 
 #- name: Install cli tool bat
 #  shell: cargo install --locked bat
 #  args:
 #    creates: "{{ user_homedir }}/.cargo/bin/bat"
 
-- name: Build user homedir var
-  include_tasks: build_user_home_dir.yml
+- name: User Shell Customizations
+  tags: [ configure_shell, configure_shell_user ]
+  include_tasks: user_shell_configs.yml
   loop: "{{ shell_users }}"
   loop_control:
     loop_var: shell_user
-
 
 - name: Remove temp directory
   file:
     path: "{{ tempdir_kvmhost.path }}"
     state: absent
-  #when: tempdir_kvmhost_path is defined
-  #changed_when: False

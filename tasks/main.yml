@@ -1,12 +1,9 @@
 ---
-- name: Display all variables/facts known for a host
-  debug:
-    var: libvirt_host_networks
-  register: myresults
-
 - name: validate variables are defined
-  include_tasks: verify_variables.yml
+  import_tasks: verify_variables.yml
 
+# Using the shell module because it appears to be faster
+# than the yum or package module
 - name: ensure required packages are installed
   shell: >
     rpm -q "{{ item }}" || yum install -y "{{ item }}" && echo yes
@@ -15,20 +12,14 @@
   loop: "{{ required_rpm_pakcages }}"
   register: pkg_installed
   changed_when: pkg_installed.stdout == 'yes'
-
-- name: Install required python libraries
-  become: yes
-  become_user: "{{ admin_user }}"
-  pip:
-    name: openshift
-    extra_args: --user
+  tags: [ install_packages ]
 
 - name: configure shell extras
-  include_tasks: configure_shell.yml
+  import_tasks: configure_shell.yml
   when: configure_shell|bool
 
 - name: Setup Libvirt
-  include_tasks: libvirt_setup.yml
+  import_tasks: libvirt_setup.yml
 
 - name: Setup Cockpit
   include_tasks: cockpit_setup.yml
@@ -36,3 +27,4 @@
 
 #- name: Flush handlers
 #  meta: flush_handlers
+

@@ -1,11 +1,6 @@
 ---
-- name: Add user to libvirt group
-  user:
-    name: "{{ admin_user }}"
-    groups: libvirt,qemu
-    append: yes
-
 - name: Allow non-root users to libvirt unix_sock_group
+  tags: [libvirt_setup, libvirt_user_mode]
   lineinfile:
     dest: /etc/libvirt/libvirtd.conf
     regexp: '^#\s*unix_sock_group.*$'
@@ -13,6 +8,7 @@
   notify: Reload libvirtd service
 
 - name: Allow non-root users to libvirt unix_sock_rw_perms
+  tags: [libvirt_setup, libvirt_user_mode]
   lineinfile:
     dest: /etc/libvirt/libvirtd.conf
     regexp: '^#\s*unix_sock_rw_perms.*$'
@@ -20,6 +16,7 @@
   notify: Reload libvirtd service
 
 - name: Allow non-root users to libvirt unix_sock_admin_perms
+  tags: [libvirt_setup, libvirt_user_mode]
   lineinfile:
     dest: /etc/libvirt/libvirtd.conf
     regexp: '^#\s*unix_sock_admin_perms.*$'

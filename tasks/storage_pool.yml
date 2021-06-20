@@ -1,5 +1,6 @@
 ---
 - name: ensure libvirt pool is defined
+  tags: [libvirt_setup, libvirt_storage]
   virt_pool:
     command: define
     name: "{{ item.name }}"
@@ -8,12 +9,14 @@
   become: True
 
 - name: ensure libvirt storage pool is active
+  tags: [libvirt_setup, libvirt_storage]
   virt_pool:
     state: "{{ item.state }}"
     name: "{{ item.name }}"
   with_items: "{{ libvirt_host_storage_pools }}"
 
 - name: ensure storage pool is started at boot
+  tags: [libvirt_setup, libvirt_storage]
   virt_pool:
     autostart: "{{ item.autostart }}"
     name: "{{ item.name }}"

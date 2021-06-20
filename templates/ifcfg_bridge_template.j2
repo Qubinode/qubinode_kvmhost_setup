@@ -1,14 +1,17 @@
-DEVICE={{ libvirt_host_networks[bridge_idx].bridge_device }}
-NAME={{ libvirt_host_networks[bridge_idx].bridge_device }}
-TYPE={{ libvirt_host_networks[bridge_idx].ifcfg_type }}
+# {{ bridge_name }} port
+# {{ ansible_managed }}
+# commit: {{ lookup('pipe', 'git rev-parse --short HEAD') }}
+DEVICE={{ bridge_name }}
+NAME={{ bridge_name }}
+TYPE={{ interface_type }}
 ONBOOT=yes
-{% if libvirt_host_networks[bridge_idx].ifcfg_bootproto == "dhcp" %}
-BOOTPROTO={{ libvirt_host_networks[bridge_idx].ifcfg_bootproto }}
-{% elif libvirt_host_networks[bridge_idx].ifcfg_bootproto == "none" %}
+{% if bootproto == "dhcp" %}
+BOOTPROTO={{ bootproto }}
+{% elif bootproto == "none" %}
 BOOTPROTO=static
-IPADDR={{ libvirt_host_networks[bridge_idx].ipaddress }}
-GATEWAY={{ libvirt_host_networks[bridge_idx].gateway }}
-PREFIX={{ libvirt_host_networks[bridge_idx].mask_prefix }}
+IPADDR={{ ipaddress }}
+GATEWAY={{ gateway }}
+PREFIX={{ netmask_prefix }}
 {% endif %}
 ZONE=public
 DELAY=0
