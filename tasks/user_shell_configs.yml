@@ -34,6 +34,8 @@
         mode: 0644
 
     - name: Deploy Startship config for user {{ shell_user }} 
+      become: yes
+      become_user: root
       template:
         src: starship.toml.j2
         dest: "{{ user_homedir }}/.config/starship.toml"
@@ -86,15 +88,33 @@
       when: powerline_font.stat.exists == False
       block:
         - name: Ensure {{ user_homedir }}/.config/fontconfig/conf.d
+          become: yes
+          become_user: root
           file:
             path: "{{ user_homedir }}/.config/fontconfig/conf.d"
             state: directory
             mode: '0755'
+            owner: "{{ shell_user }}"
+
         - name: Download powerline fontconfig for user {{ shell_user }} 
+          become: yes
+          become_user: root
           get_url:
             url: https://raw.githubusercontent.com/powerline/fonts/master/fontconfig/50-enable-terminess-powerline.conf
             dest: "{{ user_homedir }}/.config/fontconfig/conf.d/50-enable-terminess-powerline.conf"
-        - name: Run powerline fonts install.sh for user {{ shell_user }} 
+            owner: "{{ shell_user }}"
+
+        - name: Change owner on {{ powerline_tmp_dir }}/fonts/install.sh to {{ shell_user }}
+          become: yes
+          become_user: root
+          file:
+            path: "{{ powerline_tmp_dir }}/fonts/install.sh"
+            owner: "{{ shell_user }}"
+            mode: '0755'
+
+        - name: Run powerline fonts install.sh for user {{ shell_user }}
+          become: yes
+          become_user: root
           shell: "{{ powerline_tmp_dir }}/fonts/install.sh"
           args:
             chdir: "{{ powerline_tmp_dir }}/fonts"

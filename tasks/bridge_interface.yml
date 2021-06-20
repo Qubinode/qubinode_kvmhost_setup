@@ -74,20 +74,16 @@
     
     - name: Ensure {{ bridge_name }} connection is up 
       tags: [libvirt_setup, libvirt_bridge]
-      command: "nmcli connection up {{ bridge_name }}"
+      command: |
+        nmcli connection reload {{ bridge_device }}
+        ifdown {{ bridge_device }}
+        ifup {{ bridge_device }}
+        nmcli connection up {{ bridge_device }}
+        nmcli connection up {{ bridge_name }}
       args:
         warn: no
       changed_when: false
-    
-    #- name: diable old connection
-    #  tags: [libvirt_setup, libvirt_bridge]
-    #  command: "sudo nmcli connection down {{ bridge_device }}"
-    #  args:
-    #    warn: no
-    #  changed_when: false
-    #  when: (("RedHat" and ansible_distribution_major_version == '8')  and (not bridge_name | bool or bridge_name is undefined))
-    #  ignore_errors: yes
-    
+       
     - name: Ensure libvirt bridge network is defined
       tags: [libvirt_setup, libvirt_bridge, libvirt_networks]
       virt_net:
