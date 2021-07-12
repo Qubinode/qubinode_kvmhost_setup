@@ -20,6 +20,12 @@ fi
 ## better-history
 if [ -f {{ synth_shell_dir }}/synth-shell/better-history.sh ] && [ -n "$( echo $- | grep i )" ]; then
         source {{ synth_shell_dir }}/synth-shell/better-history.sh
+else
+    export HISTSIZE=100000
+    export HISTFILESIZE=200000
+    export HISTTIMEFORMAT='%d/%m/%y %T '
+    shopt -s histappend
+    PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND$'\n'}history -a; history -c; history -r"
 fi
 
 ## Startship shell prompt

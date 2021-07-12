@@ -1,5 +1,6 @@
 ---
 - name: Allow non-root users to libvirt unix_sock_group
+  become: yes
   tags: [libvirt_setup, libvirt_user_mode]
   lineinfile:
     dest: /etc/libvirt/libvirtd.conf
@@ -8,6 +9,7 @@
   notify: Reload libvirtd service
 
 - name: Allow non-root users to libvirt unix_sock_rw_perms
+  become: yes
   tags: [libvirt_setup, libvirt_user_mode]
   lineinfile:
     dest: /etc/libvirt/libvirtd.conf
@@ -16,9 +18,20 @@
   notify: Reload libvirtd service
 
 - name: Allow non-root users to libvirt unix_sock_admin_perms
+  become: yes
   tags: [libvirt_setup, libvirt_user_mode]
   lineinfile:
     dest: /etc/libvirt/libvirtd.conf
     regexp: '^#\s*unix_sock_admin_perms.*$'
     line: 'unix_sock_admin_perms = "0700"'
   notify: Reload libvirtd service
+
+- name: Allow libvirt grow write access to /var/lib/libvirt/images
+  become: yes
+  tags: [libvirt_setup, libvirt_user_mode]
+  file:
+    path: /var/lib/libvirt/images
+    owner: root
+    group: libvirt
+    mode: u=rwX,g=rwX,o=rX
+    recurse: yes
