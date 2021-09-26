@@ -160,7 +160,6 @@ configure_shell: no
 # users whose shell will be configured
 shell_users:
   - "{{ admin_user }}"
-  - root
 
 # set to true to test in container
 cicd_test: false

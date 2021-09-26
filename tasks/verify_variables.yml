@@ -49,12 +49,6 @@
   fail: msg="Bailing out. this play requires 'qubinode_bridge_name' qubinode bridge name"
   when: qubinode_bridge_name |length == 0
 
-- name: get the index of a dict
-  tags: verify_variables
-  debug:
-    msg: "{{ item.mac }}"
-  loop: "{{ libvirt_host_networks }}"
-
 
 # TODO: this section might need to be replaced
 - name: ensureing the libvirt_host_networks values are not empty if defined
