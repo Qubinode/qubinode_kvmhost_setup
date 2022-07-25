@@ -28,12 +28,8 @@
   when: (bridge_item.mode == 'bridge' and  not cicd_test|bool and  (ansible_distribution != "Fedora" and ansible_distribution_major_version != '36'))
 
 - name: configure bridge interface for libvirt
-  include_tasks: bridge_interface _nmcli.yml
-  #when: configure_bridge
-  loop: "{{ libvirt_host_networks }}"
-  loop_control:
-    index_var: type_idx
-    loop_var: bridge_item
+  ansible.builtin.include_role:
+    name: linux-system-roles.network
   when: (bridge_item.mode == 'bridge' and  not cicd_test|bool and  (ansible_distribution == "Fedora" and ansible_distribution_major_version == '36'))
 
 - meta: end_play
