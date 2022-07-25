@@ -42,13 +42,13 @@
           dhcp4: no
           #dhcp4_send_hostname: no
           gateway4: 192.168.1.1
-        dns:
-          - 192.168.1.239
-          - 1.1.1.1
-        dns_search:
-          - tosins-lab.com
-        address:
-        - 192.168.1.88/24
+          dns:
+            - 192.168.1.239
+            - 1.1.1.1
+          dns_search:
+            - tosins-lab.com
+          address:
+          - 192.168.1.88/24
       - name:  "br0-bond0-{{ kvm_host_interface }}"
         type: ethernet
         interface_name: "{{ kvm_host_interface }}"
