@@ -17,14 +17,6 @@
   changed_when: start_tuned.rc != 0
   args:
     executable: /bin/bash
-- name: configure bridge interface for libvirt
-  include_tasks: bridge_interface.yml
-  #when: configure_bridge
-  loop: "{{ libvirt_host_networks }}"
-  loop_control:
-    index_var: type_idx
-    loop_var: bridge_item
-  when: (bridge_item.mode == 'bridge' and  not cicd_test|bool and  (ansible_distribution != "Fedora" and ansible_distribution_major_version != '36'))
 
 - name: configure bridge interface for libvirt
   ansible.builtin.import_role:
@@ -56,17 +48,13 @@
 
   when: ansible_distribution == "Fedora" and ansible_distribution_major_version == '36'
 
-- name: Ensure libvirt bridge network is defined
-  vars:
-    net_name: "{{ libvirt_host_networks[type_idx].name }}"
-    net_mode: "{{ libvirt_host_networks[type_idx].mode }}"
-    net_bridge_device: "{{ libvirt_host_networks[type_idx].bridge_device }}"
-    net_create: "{{ libvirt_host_networks[type_idx].create }}"
-  virt_net:
-    name: "{{ net_name }}"
-    command: define
-    xml: '{{ (lookup("template", "br_network.xml.j2")) }}'
-  when: net_create|bool
+- name: configure bridge interface for libvirt
+  include_tasks: bridge_interface.yml
+  #when: configure_bridge
+  loop: "{{ libvirt_host_networks }}"
+  loop_control:
+    index_var: type_idx
+    loop_var: bridge_item
 
 - name: configure libvirt network
   loop: "{{ libvirt_host_networks }}"
