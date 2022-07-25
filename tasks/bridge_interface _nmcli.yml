@@ -1,0 +1,31 @@
+# SPDX-License-Identifier: BSD-3-Clause
+---
+- hosts: all
+  vars:
+    network_state:
+      interfaces:
+        - name: "{{ qubinode_bridge_device }}"
+          interface_name: "{{ kvm_host_interface }}"
+          type: bridge
+          state: up
+          ipv4:
+            enabled: true
+            address:
+              - ip: "{{ kvm_host_ip }}"
+                prefix-length: "{{ kvm_host_mask_prefix }}"
+            dhcp: false
+      routes:
+        config:
+          - destination: 0.0.0.0/0
+            next-hop-address: "{{ kvm_host_gw }}"
+            next-hop-interface: "{{ qubinode_bridge_device }}"
+            table-id: 254
+      dns-resolver:
+        config:
+          search:
+            - "{{ kvm_host_domain }}"
+          server:
+            - "{{ primary_dns_server }}"
+            - "{{ secondary_dns_server }}"
+  roles:
+    - linux-system-roles.network
