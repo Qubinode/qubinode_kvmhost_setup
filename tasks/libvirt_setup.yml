@@ -30,7 +30,7 @@
 - name: configure bridge interface for libvirt
   ansible.builtin.include_role:
     name: linux-system-roles.network
-  when: (bridge_item.mode == 'bridge' and  not cicd_test|bool and  (ansible_distribution == "Fedora" and ansible_distribution_major_version == '36'))
+  when: ansible_distribution == "Fedora" and ansible_distribution_major_version == '36'
 
 - meta: end_play
   when: ansible_distribution == "Fedora" and ansible_distribution_major_version == '36'
