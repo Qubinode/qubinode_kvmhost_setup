@@ -16,6 +16,8 @@ kvm_host_dns_server: "1.1.1.1"
 dns_servers:
   - "{{ dns_server }}"
   - "8.8.8.8"
+primary_dns_server: "1.1.1.1"
+secondary_dns_server: "8.8.8.8"
 kvm_host_libvirt_dir: /var/lib/libvirt/images
 
 # Optional nic for storage network
