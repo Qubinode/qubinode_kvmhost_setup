@@ -17,7 +17,6 @@
   changed_when: start_tuned.rc != 0
   args:
     executable: /bin/bash
-
 - name: configure bridge interface for libvirt
   include_tasks: bridge_interface.yml
   #when: configure_bridge
@@ -38,20 +37,18 @@
         interface_name: bond0
         controller: internal-br0
         port_type: bridge
-        routes:
-          config:
-            - destination: 0.0.0.0/0
-              next-hop-address: "{{ kvm_host_gw }}"
-              next-hop-interface: "{{ qubinode_bridge_device }}"
-              table-id: 254
-        dns-resolver:
-          config:
-            search:
-              - "{{ kvm_host_domain }}"
-            server:
-              - "{{ primary_dns_server }}"
-              - "{{ secondary_dns_server }}"
-
+        ip:
+          route_metric4: 100
+          dhcp4: no
+          #dhcp4_send_hostname: no
+          gateway4: 192.168.1.1
+        dns:
+          - 192.168.1.239
+          - 1.1.1.1
+        dns_search:
+          - tosins-lab.com
+        address:
+        - 192.168.1.88/24
       - name:  "br0-bond0-{{ kvm_host_interface }}"
         type: ethernet
         interface_name: "{{ kvm_host_interface }}"
