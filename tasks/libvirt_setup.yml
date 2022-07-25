@@ -32,16 +32,8 @@
   vars:
     network_provider: nm
     network_connections:
-      - name: br0-bond0
-        type: bond
-        interface_name: bond0
-        controller: internal-br0
-        port_type: bridge
-      - name:  "br0-bond0-{{ kvm_host_interface }}"
-        type: ethernet
-        interface_name: "{{ kvm_host_interface }}"
-        controller: br0-bond0
-        port_type: bond
+      - name: internal-br0
+        type: bridge
         ip:
           route_metric4: 100
           dhcp4: no
@@ -54,6 +46,17 @@
             - tosins-lab.com
           address:
           - 192.168.1.88/24
+      - name: br0-bond0
+        type: bond
+        interface_name: bond0
+        controller: internal-br0
+        port_type: bridge
+
+      - name: "br0-bond0-{{ kvm_host_interface }}"
+        type: ethernet
+        interface_name: "{{ kvm_host_interface }}"
+        controller: br0-bond0
+        port_type: bond
 
   when: ansible_distribution == "Fedora" and ansible_distribution_major_version == '36'
 
