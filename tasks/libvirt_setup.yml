@@ -56,18 +56,6 @@
 
   when: ansible_distribution == "Fedora" and ansible_distribution_major_version == '36'
 
-- name: Ensure libvirt bridge network is defined
-  vars:
-    net_name: "{{ libvirt_host_networks[type_idx].name }}"
-    net_mode: "{{ libvirt_host_networks[type_idx].mode }}"
-    net_bridge_device: "{{ libvirt_host_networks[type_idx].bridge_device }}"
-    net_create: "{{ libvirt_host_networks[type_idx].create }}"
-  virt_net:
-    name: "{{ net_name }}"
-    command: define
-    xml: '{{ (lookup("template", "br_network.xml.j2")) }}'
-  when: (net_create|bool and ansible_distribution == "Fedora" and ansible_distribution_major_version == '36')
-
 - name: configure libvirt network
   loop: "{{ libvirt_host_networks }}"
   loop_control:
