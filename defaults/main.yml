@@ -1,4 +1,5 @@
 ---
+no_log: false 
 ##*****************************
 ## Required User Configurations
 kvm_host_ipaddr: ""
