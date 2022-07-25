@@ -95,15 +95,3 @@
     src: resolv.conf.j2
     dest: /etc/resolv.conf
   when: not bridge_name | bool or bridge_name is undefined
-
-- name: Ensure libvirt bridge network is defined
-  vars:
-    net_name: "{{ libvirt_host_networks[type_idx].name }}"
-    net_mode: "{{ libvirt_host_networks[type_idx].mode }}"
-    net_bridge_device: "{{ libvirt_host_networks[type_idx].bridge_device }}"
-    net_create: "{{ libvirt_host_networks[type_idx].create }}"
-  virt_net:
-    name: "{{ net_name }}"
-    command: define
-    xml: '{{ (lookup("template", "br_network.xml.j2")) }}'
-  when: net_create|bool
