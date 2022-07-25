@@ -31,11 +31,11 @@
   ansible.builtin.import_role:
     name: linux-system-roles.network
   vars:
+    network_provider: nm
     network_state:
       interfaces:
         - name: "{{ qubinode_bridge_device }}"
-          interface_name: "{{ kvm_host_interface }}"
-          type: bridge
+          type: linux-bridge
           state: up
           ipv4:
             enabled: true
@@ -43,6 +43,12 @@
               - ip: "{{ kvm_host_ip }}"
                 prefix-length: "{{ kvm_host_mask_prefix }}"
             dhcp: false
+          bridge:
+            options:
+              stp:
+                enabled: false
+            port:
+            - name: "{{ kvm_host_interface }}"
       routes:
         config:
           - destination: 0.0.0.0/0
