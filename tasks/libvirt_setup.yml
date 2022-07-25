@@ -38,25 +38,26 @@
         interface_name: bond0
         controller: internal-br0
         port_type: bridge
+        routes:
+          config:
+            - destination: 0.0.0.0/0
+              next-hop-address: "{{ kvm_host_gw }}"
+              next-hop-interface: "{{ qubinode_bridge_device }}"
+              table-id: 254
+        dns-resolver:
+          config:
+            search:
+              - "{{ kvm_host_domain }}"
+            server:
+              - "{{ primary_dns_server }}"
+              - "{{ secondary_dns_server }}"
 
       - name:  "br0-bond0-{{ kvm_host_interface }}"
         type: ethernet
         interface_name: "{{ kvm_host_interface }}"
         controller: br0-bond0
         port_type: bond
-    routes:
-      config:
-        - destination: 0.0.0.0/0
-          next-hop-address: "{{ kvm_host_gw }}"
-          next-hop-interface: "{{ qubinode_bridge_device }}"
-          table-id: 254
-    dns-resolver:
-      config:
-        search:
-          - "{{ kvm_host_domain }}"
-        server:
-          - "{{ primary_dns_server }}"
-          - "{{ secondary_dns_server }}"
+
   when: ansible_distribution == "Fedora" and ansible_distribution_major_version == '36'
 
 - meta: end_play
