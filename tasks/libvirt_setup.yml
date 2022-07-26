@@ -31,14 +31,14 @@
           route_metric4: 100
           dhcp4: no
           #dhcp4_send_hostname: no
-          gateway4: 192.168.1.1
+          gateway4: "{{ kvm_host_gw }}"
           dns:
-            - 192.168.1.239
-            - 1.1.1.1
+            - "{{ primary_dns_server }}"
+            - "{{ dns_forwarder }}"
           dns_search:
-            - tosins-lab.com
+            - "{{ domain }}"
           address:
-          - 192.168.1.88/24
+          - "{{ kvm_host_ip}}/{{domain }}"
       - name: eno1
         state: up 
         type: ethernet
