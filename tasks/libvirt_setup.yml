@@ -42,7 +42,7 @@
       - name: eno1
         state: up 
         type: ethernet
-        interface_name: eno1
+        interface_name: "{{ kvm_host_interface }}"
         controller: "{{ qubinode_bridge_device }}"
         port_type: bridge
 
