@@ -38,7 +38,7 @@
           dns_search:
             - "{{ domain }}"
           address:
-          - "{{ kvm_host_ip}}/{{domain }}"
+          - "{{ kvm_host_ip }}/{{ kvm_host_mask_prefix }}"
       - name: eno1
         state: up 
         type: ethernet
