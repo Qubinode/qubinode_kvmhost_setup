@@ -21,6 +21,7 @@
 - name: Return bridge status
   ansible.builtin.command: "ifconfig {{ qubinode_bridge_device }}"
   register: bridge_interface
+  ignore_errors: true
   
 - name: Get Bridge Status
   ansible.builtin.set_fact:
