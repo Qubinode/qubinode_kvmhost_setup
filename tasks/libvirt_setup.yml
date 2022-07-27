@@ -19,7 +19,7 @@
     executable: /bin/bash
     
 - name: Return bridge status
-  ansible.builtin.command: ifconfig qubibr0
+  ansible.builtin.command: "ifconfig {{ qubinode_bridge_device }}"
   register: bridge_interface
   
 - name: Get Bridge Status
