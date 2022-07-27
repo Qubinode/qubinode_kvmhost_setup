@@ -17,6 +17,22 @@
   changed_when: start_tuned.rc != 0
   args:
     executable: /bin/bash
+    
+- name: Return bridge status
+  ansible.builtin.command: ifconfig qubibr0
+  register: bridge_interface
+  
+- name: Get Bridge Status
+  ansible.builtin.set_fact:
+    bridge_interface_status: "{{ bridge_interface }}"
+    
+- name: Print the bridge info
+  ansible.builtin.debug:
+    msg: System {{ inventory_hostname }} has bridge {{ bridge_interface_status.stdout }}
+  when: bridge_interface_status is defined
+
+- meta: end_play
+
 
 - name: configure bridge interface for libvirt
   ansible.builtin.import_role:
