@@ -60,7 +60,7 @@
         controller: "{{ qubinode_bridge_device }}"
         port_type: bridge
 
-  when: ansible_distribution == "Fedora" and ansible_distribution_major_version == '36' and bridge_interface_status is undefined
+  when: (ansible_distribution == "Fedora" and ansible_distribution_major_version == '36' and bridge_interface_status is undefined)
 
 - name: configure bridge interface for libvirt
   include_tasks: bridge_interface.yml
