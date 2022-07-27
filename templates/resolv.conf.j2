@@ -8,9 +8,10 @@ domain {{ kvm_host_domain }}
 {% endif %}
 {% if kvm_host_dns_server != "" %}
 nameserver {{ kvm_host_dns_server }}
+nameserver {{ dns_forwarder }}
 {% elif kvm_host_dns_server == "" %}
 {% for ns in kvm_host_dns_servers %}
-nameserver {{ ns }}
+nameserver {{ dns_forwarder }}
 {% endfor %}
 {% endif %}
 options rotate timeout:1
