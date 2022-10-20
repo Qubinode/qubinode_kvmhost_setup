@@ -25,7 +25,7 @@
   loop_control:
     index_var: type_idx
     loop_var: bridge_item
-  when: (bridge_item.mode == 'bridge' and  not cicd_test|bool)
+  when: (bridge_item.mode == 'bridge' and configure_bridge|bool)
 
 - name: configure libvirt network
   loop: "{{ libvirt_host_networks }}"
