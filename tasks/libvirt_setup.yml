@@ -20,7 +20,7 @@
 
 - name: configure bridge interface for libvirt
   include_tasks: bridge_interface.yml
-  #when: configure_bridge
+  when: configure_bridge
   loop: "{{ libvirt_host_networks }}"
   loop_control:
     index_var: type_idx
