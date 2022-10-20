@@ -5,7 +5,7 @@
     path: "{{ user_homedir }}/.config"
     state: directory
     owner: "{{ shell_user }}"
-    group: "{{ shell_user }}"   
+    group: "wheel"   
 
 - name: Deploy startship config for {{ shell_user }} 
   become: yes
@@ -14,7 +14,7 @@
     src: starship.toml.j2
     dest: "{{ user_homedir }}/.config/starship.toml"
     owner: "{{ shell_user }}"
-    group: "{{ shell_user }}"
+    group: "wheel"
     mode: 0644
 
 - name: Deploy bash_profile for {{ shell_user }} 
@@ -24,7 +24,7 @@
     src: bash_profile.j2
     dest: "{{ user_homedir }}/.bash_profile"
     owner: "{{ shell_user }}"
-    group: "{{ shell_user }}"
+    group: "wheel"
     mode: 0644
 
 #- name: Check if ~/.vim/autoload/plug.vim exist
@@ -53,7 +53,7 @@
     src: bashrc.j2
     dest: "{{ user_homedir }}/.bashrc"
     owner: "{{ shell_user }}"
-    group: "{{ shell_user }}"
+    group: "wheel"
     mode: 0644    
 
 - name: Deploy vimrc for {{ shell_user }} 
@@ -63,7 +63,7 @@
     src: vimrc.j2
     dest: "{{ user_homedir }}/.vimrc"
     owner: "{{ shell_user }}"
-    group: "{{ shell_user }}"
+    group: "wheel"
     mode: 0644    
     
 - name: Extract .vim
@@ -73,7 +73,7 @@
     src: vim.zip
     dest: "{{ user_homedir }}"
     owner: "{{ shell_user }}"
-    group: "{{ shell_user }}"
+    group: "wheel"
 
 - name: check if powerline font is installed
   become: yes
