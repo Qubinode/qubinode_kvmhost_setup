@@ -73,21 +73,27 @@
   with_items:
     - NetworkManager
     - libvirtd
-  when: (("RedHat" and ansible_distribution_major_version == '8') and (not bridge_name | bool or bridge_name is undefined))
+  when: 
+    - (("RedHat" and ansible_distribution_major_version == '8')  and (not bridge_name | bool or bridge_name is undefined))
+    - (("RedHat" and ansible_distribution_major_version == '9')  and (not bridge_name | bool or bridge_name is undefined))
 
 - name: active bridge connection
   command: "nmcli connection up {{ libvirt_host_networks[type_idx].bridge_device }}"
   args:
     warn: no
   changed_when: false
-  when: (("RedHat" and ansible_distribution_major_version == '8') and (not bridge_name | bool or bridge_name is undefined))
+  when: 
+    - (("RedHat" and ansible_distribution_major_version == '8')  and (not bridge_name | bool or bridge_name is undefined))
+    - (("RedHat" and ansible_distribution_major_version == '9')  and (not bridge_name | bool or bridge_name is undefined))
 
 - name: diable old connection
   command: "sudo nmcli connection down {{ libvirt_host_networks[type_idx].bridge_slave_dev }}"
   args:
     warn: no
   changed_when: false
-  when: (("RedHat" and ansible_distribution_major_version == '8')  and (not bridge_name | bool or bridge_name is undefined))
+  when: 
+    - (("RedHat" and ansible_distribution_major_version == '8')  and (not bridge_name | bool or bridge_name is undefined))
+    - (("RedHat" and ansible_distribution_major_version == '9')  and (not bridge_name | bool or bridge_name is undefined))
   ignore_errors: yes
 
 - name: update /etc/resolv.conf
