@@ -30,7 +30,6 @@
 - name: Print the bridge info
   ansible.builtin.debug:
     msg: System {{ inventory_hostname }} has bridge {{ bridge_interface_status.stdout }}
-  when: bridge_interface_status is defined
 
 - name: configure bridge interface for libvirt
   ansible.builtin.import_role:
@@ -61,10 +60,10 @@
         port_type: bridge
 
   when:
-    - ansible_distribution == "Fedora" and ansible_distribution_major_version == '36' and bridge_interface_status is undefined
-    - ansible_distribution == "Fedora" and ansible_distribution_major_version == '37' and bridge_interface_status is undefined
-    - ansible_distribution == "CentOS" and ansible_distribution_major_version == '9' and bridge_interface_status is undefined
-    - ansible_distribution == "RedHat" and ansible_distribution_major_version == '9' and bridge_interface_status is undefined
+    - ansible_distribution == "Fedora" and ansible_distribution_major_version == '36' and bridge_interface_status.stdout is undefined
+    - ansible_distribution == "Fedora" and ansible_distribution_major_version == '37' and bridge_interface_status.stdout is undefined
+    - ansible_distribution == "CentOS" and ansible_distribution_major_version == '9' and bridge_interface_status.stdout is undefined
+    - ansible_distribution == "RedHat" and ansible_distribution_major_version == '9' and bridge_interface_status.stdout is undefined
 
 - name: configure bridge interface for libvirt
   include_tasks: bridge_interface.yml
