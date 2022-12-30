@@ -62,7 +62,9 @@
   when: (ansible_distribution == "Fedora" and ansible_distribution_major_version == '36' and bridge_interface_status.stdout == "") or 
         (ansible_distribution == "Fedora" and ansible_distribution_major_version == '37' and bridge_interface_status.stdout == "") or 
         (ansible_distribution == "CentOS" and ansible_distribution_major_version == '9' and bridge_interface_status.stdout == "") or 
+        (ansible_distribution == "RedHat" and ansible_distribution_major_version == '8' and bridge_interface_status.stdout  == "") or 
         (ansible_distribution == "RedHat" and ansible_distribution_major_version == '9' and bridge_interface_status.stdout  == "")
+
 
 - name: configure bridge interface for libvirt
   include_tasks: bridge_interface.yml
