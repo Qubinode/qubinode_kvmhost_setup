@@ -91,10 +91,10 @@
       when: (("RedHat" and ansible_distribution_major_version == '8')  and (not bridge_name | bool or bridge_name is undefined))
       ignore_errors: yes
   when: 
-    - ansible_distribution != "Fedora" and ansible_distribution_major_version != '36'
-    - ansible_distribution != "Fedora" and ansible_distribution_major_version != '37'
-    - ansible_distribution != "Centos" and ansible_distribution_major_version != '9'
-    - ansible_distribution != "RedHat" and ansible_distribution_major_version != '9'
+    - ansible_distribution != "Fedora" and ansible_distribution_major_version != '36' and configure_bridge == true
+    - ansible_distribution != "Fedora" and ansible_distribution_major_version != '37' and configure_bridge == true
+    - ansible_distribution != "Centos" and ansible_distribution_major_version != '9'  and configure_bridge == true
+    - ansible_distribution != "RedHat" and ansible_distribution_major_version != '9' and configure_bridge == true
 - name: update /etc/resolv.conf
   template:
     src: resolv.conf.j2
